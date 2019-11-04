@@ -7,8 +7,8 @@ namespace AssetBundleFramework
 {
     public class VersionConfig
     {
-        public static string app_version = "1.1";
-        public static string res_version = "2";
+        public static string app_version = "1.0";
+        public static string res_version = "1";
         public static string VersionFileName = "VersionFile.txt";
 
     }

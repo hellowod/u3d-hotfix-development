@@ -84,7 +84,11 @@ namespace AssetBundleFramework
 #if UNITY_IOS
             return string.Format("{0}/{1}/{2}", url, "iOS", _appVersion);
 #elif UNITY_ANDROID
-		return string.Format("{0}/{1}/{2}", url, "Android", _appVersion);
+		    return string.Format("{0}/{1}/{2}", url, "Android", _appVersion);
+#elif UNITY_STANDALONE_OSX
+            return string.Format("{0}/{1}/{2}", url, "OSX", _appVersion);
+#elif UNITY_STANDALONE_WIN
+            return string.Format("{0}/{1}/{2}", url, "Win", _appVersion);
 #endif
         }
 
