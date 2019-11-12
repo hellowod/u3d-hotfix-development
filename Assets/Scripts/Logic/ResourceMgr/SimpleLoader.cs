@@ -27,14 +27,11 @@ public class SimpleLoader
 	public static string LoadText(string path)
 	{
 		#if UNITY_EDITOR && !LOAD_ASSETBUNDLE_INEDITOR
-		path = string.Format("{0}/{1}",RES_ROOT_PATH,path);
+		    path = string.Format("{0}/{1}",RES_ROOT_PATH,path);
 		#else		
-		if (VersionMgr.instance.CheckFileIsInVersionFile(path)) 
-		{
+		if (VersionMgr.instance.CheckFileIsInVersionFile(path)) {
 			path = string.Format("{0}/{1}",AssetbundleLoader.Download_Path,path) ;
-		}
-		else 
-		{
+		} else {
 			path = string.Format("{0}/{1}",AssetbundleLoader.ROOT_PATH,path);
 		}
 		#endif

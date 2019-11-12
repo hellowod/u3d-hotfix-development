@@ -39,15 +39,16 @@ namespace AssetBundleFramework
             AssetDatabase.Refresh();
         }
 
-        static string GetRelativePathToAssets(string path)
+        private static string GetRelativePathToAssets(string path)
         {
             return path.Substring(Application.dataPath.Length);
         }
 
-        static bool CheckFileSuffixNeedIgnore(string fileName)
+        private static bool CheckFileSuffixNeedIgnore(string fileName)
         {
-            if (fileName.EndsWith(".meta") || fileName.EndsWith(".DS_Store"))
+            if (fileName.EndsWith(".meta") || fileName.EndsWith(".DS_Store")) {
                 return true;
+            }
             return false;
         }
     }
