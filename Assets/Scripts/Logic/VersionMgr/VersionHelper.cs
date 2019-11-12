@@ -10,27 +10,27 @@ namespace AssetBundleFramework
         public static string app_version = "1.0";
         public static string res_version = "1";
         public static string VersionFileName = "VersionFile.txt";
-
     }
 
     public class VersionFileInfo
     {
-        private string _md5;
+        private string m_md5;
+        private string m_version;
+
         public string md5
         {
-            get { return _md5; }
+            get { return m_md5; }
         }
-
-        private string _version;
+        
         public string version
         {
-            get { return _version; }
+            get { return m_version; }
         }
 
         public VersionFileInfo(string md5Val, string versionVal)
         {
-            _md5 = md5Val;
-            _version = versionVal;
+            m_md5 = md5Val;
+            m_version = versionVal;
         }
     }
 
@@ -42,6 +42,11 @@ namespace AssetBundleFramework
 
     public class VersionHelper
     {
+        /// <summary>
+        /// 解析版本文件
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <param name="versionFile"></param>
         public static void ParseVersionFile(string txt, ref VersionFileModel versionFile)
         {
             string[] content = txt.Split('\n');
@@ -95,6 +100,5 @@ namespace AssetBundleFramework
             }
             return sb.ToString();
         }
-
     }
 }

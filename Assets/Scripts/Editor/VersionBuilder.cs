@@ -12,11 +12,16 @@ namespace AssetBundleFramework
     {
         public static string AssetsPath = Application.streamingAssetsPath;
 
-        private static string _versionFilesPath = Application.dataPath + "/VersionFiles/";
-        private static string _md5FileName = "Md5File.txt";
-        private static string _verionFileName = "";
+        private static string s_versionFilesPath = Application.dataPath + "/VersionFiles/";
+        private static string s_versionMD5FileName = "VersionMD5File.txt";
+        private static string s_verionFileName = "";
 
-        private static string _exportPath = "";
+        private static string s_exportPath = "";
+
+        private static Dictionary<string, string> s_allFilesMd5NowVersion = new Dictionary<string, string>();
+        private static Dictionary<string, string> s_allFilesMd5LastVersion = new Dictionary<string, string>();
+
+        private static VersionFileModel s_versionFile = new VersionFileModel();
 
         static VersionBuilder()
         {
@@ -25,24 +30,24 @@ namespace AssetBundleFramework
 #elif UNITY_ANDROID
 			_versionFilesPath += "Android/";
 #elif UNITY_STANDALONE_WIN
-            _versionFilesPath += "Win/";
+            s_versionFilesPath += "Win/";
 #elif UNITY_STANDALONE_OSX
             _versionFilesPath += "OSX/";
 #endif
-            _md5FileName = _versionFilesPath + _md5FileName;
-            _verionFileName = _versionFilesPath + VersionConfig.VersionFileName;
+            s_versionMD5FileName = s_versionFilesPath + s_versionMD5FileName;
+            s_verionFileName = s_versionFilesPath + VersionConfig.VersionFileName;
         }
 
-        [MenuItem("Version/CleanBuildApp(we need a new app)")]
-        private static void BuildGameApp()
+        [MenuItem("Version/CleanBuildApp")]
+        private static void BuildApp()
         {
             CleanBuildAllBundle();
             BuildText();
             CleanAndWriteNewVersion();
         }
 
-        [MenuItem("Version/FastBuildApp(we need a new app)")]
-        private static void FastBuildGameApp()
+        [MenuItem("Version/FastBuildApp")]
+        private static void FastBuildApp()
         {
             BuildAllBundle();
             BuildText();
@@ -55,16 +60,16 @@ namespace AssetBundleFramework
         private static void CleanAndWriteNewVersion()
         {
             CleanVersionFiles();
-            if (GenerateAllFilesMd5Now()) {
-                WriteMd5Files();
+            if (GenerateAllFilesMD5()) {
+                WriteVersionMd5Files();
             }
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
 
 
-        [MenuItem("Version/CleanBuildPatch(we need update assetbundles)")]
-        static void BuildAssetbundle()
+        [MenuItem("Version/CleanBuildPatch")]
+        private static void BuildAssetbundle()
         {
             if (CheckCanBuildPatch()) {
                 CleanBuildAllBundle();
@@ -73,8 +78,7 @@ namespace AssetBundleFramework
             }
         }
 
-
-        [MenuItem("Version/FastBuildPatch(we need update assetbundles)")]
+        [MenuItem("Version/FastBuildPatch")]
         private static void FastBuildAssetbundle()
         {
             if (CheckCanBuildPatch()) {
@@ -84,55 +88,61 @@ namespace AssetBundleFramework
             }
         }
 
+        /// <summary>
+        /// 检查是否可以构建补丁包
+        /// </summary>
+        /// <returns></returns>
         private static bool CheckCanBuildPatch()
         {
-            if (!File.Exists(_md5FileName)) {
+            if (!File.Exists(s_versionMD5FileName)) {
                 Debug.LogError("Can not find last version,you may execute \"CleanBuildApp\" first if you want to update assetbundles based on last version");
                 return false;
             }
-            if (LoadVersionFileOnDisk() == null) {
+            if (LoadVersionFile() == null) {
                 Debug.LogError("Load last update file failed!");
                 return false;
             }
-            if (_versionFile.resVersion == VersionConfig.res_version) {
-                Debug.LogError("You must change your res_verion in versionconfig if you want to publish a patch");
+            if (s_versionFile.resVersion == VersionConfig.res_version) {
+                Debug.LogError("You must change your res_verion in version config if you want to publish a patch");
                 return false;
             }
             return true;
         }
 
-
+        /// <summary>
+        /// 生成更新版本文件
+        /// </summary>
         private static void GenerateUpdateFiles()
         {
-            if (!LoadMd5OnDisk()) {
+            if (!LoadMd5VersionFile()) {
                 Debug.LogError("Load last version md5 file failed!");
                 return;
             }
-            if (!GenerateAllFilesMd5Now()) {
+            if (!GenerateAllFilesMD5()) {
                 Debug.LogError("Generate new version md5 file failed!");
                 return;
             }
 
-            List<string> needUpdateFileList = GenerateDifferentFilesList();
-            List<string> needDeleteFileList = GenerateNeedDeleteFilesList();
+            List<string> needUpdateFileList = GenerateDiffFilesList();
+            List<string> needDeleteFileList = GenerateDeleteFilesList();
             if (needUpdateFileList.Count == 0 && needDeleteFileList.Count == 0) {
                 Debug.LogError("nothing need update");
                 return;
             }
-            //set update files version
+            // set update files version
             string newVersion = GetNewResVersion();
-            _versionFile.resVersion = newVersion;
+            s_versionFile.resVersion = newVersion;
             for (int i = 0; i < needUpdateFileList.Count; i++) {
-                _versionFile.files[needUpdateFileList[i]] = new VersionFileInfo(_allFilesMd5Now[needUpdateFileList[i]], newVersion);
+                s_versionFile.files[needUpdateFileList[i]] = new VersionFileInfo(s_allFilesMd5NowVersion[needUpdateFileList[i]], newVersion);
             }
-            //delete unused assetbundles
+            // delete unused assetbundles
             for (int i = 0; i < needDeleteFileList.Count; i++) {
-                if (_versionFile.files.ContainsKey(needDeleteFileList[i])) {
-                    _versionFile.files.Remove(needDeleteFileList[i]);
+                if (s_versionFile.files.ContainsKey(needDeleteFileList[i])) {
+                    s_versionFile.files.Remove(needDeleteFileList[i]);
                 }
             }
             WriteVersionFiles();
-            WriteMd5Files();
+            WriteVersionMd5Files();
 
             //export update assetbundles
             ExportUpdateFiles(needUpdateFileList);
@@ -141,34 +151,41 @@ namespace AssetBundleFramework
             AssetDatabase.Refresh();
         }
 
+        /// <summary>
+        /// 清除版本文件
+        /// </summary>
         private static void CleanVersionFiles()
         {
-            if (Directory.Exists(_versionFilesPath)) {
-                Directory.Delete(_versionFilesPath, true);
+            if (Directory.Exists(s_versionFilesPath)) {
+                Directory.Delete(s_versionFilesPath, true);
             }
         }
 
-        private static void WriteMd5Files()
+        /// <summary>
+        /// 写新版本文件
+        /// </summary>
+        private static void WriteVersionMd5Files()
         {
-            if (!Directory.Exists(_versionFilesPath)) {
-                Directory.CreateDirectory(_versionFilesPath);
+            if (!Directory.Exists(s_versionFilesPath)) {
+                Directory.CreateDirectory(s_versionFilesPath);
             }
             StringBuilder sb = new StringBuilder();
-            foreach (KeyValuePair<string, string> kvp in _allFilesMd5Now) {
+            foreach (KeyValuePair<string, string> kvp in s_allFilesMd5NowVersion) {
                 string content = kvp.Key + "," + kvp.Value + "\n";
                 sb.Append(content);
             }
-            File.WriteAllText(_md5FileName, sb.ToString());
+            File.WriteAllText(s_versionMD5FileName, sb.ToString());
         }
 
-
-        private static Dictionary<string, string> _allFilesMd5LastVersion = new Dictionary<string, string>();
-
-        private static bool LoadMd5OnDisk()
+        /// <summary>
+        /// 加载资源版本文件
+        /// </summary>
+        /// <returns></returns>
+        private static bool LoadMd5VersionFile()
         {
             try {
-                _allFilesMd5LastVersion.Clear();
-                string[] content = File.ReadAllLines(_md5FileName);
+                s_allFilesMd5LastVersion.Clear();
+                string[] content = File.ReadAllLines(s_versionMD5FileName);
                 if (content != null) {
                     for (int i = 0; i < content.Length; i++) {
                         if (!string.IsNullOrEmpty(content[i])) {
@@ -177,7 +194,7 @@ namespace AssetBundleFramework
                                 Debug.LogError("Can not parse last md5 file with content " + content[i]);
                                 return false;
                             }
-                            _allFilesMd5LastVersion[kvp[0]] = kvp[1];
+                            s_allFilesMd5LastVersion[kvp[0]] = kvp[1];
                         }
                     }
                 }
@@ -187,10 +204,13 @@ namespace AssetBundleFramework
             return true;
         }
 
-        private static Dictionary<string, string> _allFilesMd5Now = new Dictionary<string, string>();
-        private static bool GenerateAllFilesMd5Now()
+        /// <summary>
+        /// 生成版本MD5文件
+        /// </summary>
+        /// <returns></returns>
+        private static bool GenerateAllFilesMD5()
         {
-            _allFilesMd5Now.Clear();
+            s_allFilesMd5NowVersion.Clear();
             if (!Directory.Exists(AssetsPath)) {
                 Debug.LogError(string.Format("AssetsPath path {0} not exist", AssetsPath));
                 return false;
@@ -202,9 +222,9 @@ namespace AssetBundleFramework
                     if (files[i].Name.EndsWith(".meta") || files[i].Name.EndsWith(".manifest")) {
                         continue;
                     }
-                    string md5 = VersionHelper.GetMd5Val(files[i].FullName);
+                    string fileMD5 = VersionHelper.GetMd5Val(files[i].FullName);
                     string fileRelativePath = files[i].FullName.Substring(AssetsPath.Length + 1);
-                    _allFilesMd5Now[fileRelativePath] = md5;
+                    s_allFilesMd5NowVersion[fileRelativePath] = fileMD5;
                 } catch (Exception ex) {
                     throw new Exception("GetMD5HashFromFile fail,error:" + ex.Message);
                 }
@@ -212,51 +232,66 @@ namespace AssetBundleFramework
             return true;
         }
 
-        private static List<string> GenerateDifferentFilesList()
+        /// <summary>
+        /// 生成插件文件列表
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> GenerateDiffFilesList()
         {
-            List<string> _needUpdateFileList = new List<string>();
-            foreach (KeyValuePair<string, string> kvp in _allFilesMd5Now) {
-                if (_allFilesMd5LastVersion.ContainsKey(kvp.Key)) {
-                    if (_allFilesMd5LastVersion[kvp.Key] == kvp.Value) {
+            List<string> needUpdateFileList = new List<string>();
+            foreach (KeyValuePair<string, string> kvp in s_allFilesMd5NowVersion) {
+                if (s_allFilesMd5LastVersion.ContainsKey(kvp.Key)) {
+                    if (s_allFilesMd5LastVersion[kvp.Key] == kvp.Value) {
                         continue;
                     } else {
-                        _needUpdateFileList.Add(kvp.Key);
+                        needUpdateFileList.Add(kvp.Key);
                     }
                 } else {
-                    _needUpdateFileList.Add(kvp.Key);
+                    needUpdateFileList.Add(kvp.Key);
                 }
             }
-            return _needUpdateFileList;
+            return needUpdateFileList;
         }
 
-        private static List<string> GenerateNeedDeleteFilesList()
+        /// <summary>
+        /// 生成待删除的文件列表
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> GenerateDeleteFilesList()
         {
-            List<string> _needDeleteFileList = new List<string>();
-            foreach (KeyValuePair<string, string> kvp in _allFilesMd5LastVersion) {
-                if (_allFilesMd5Now.ContainsKey(kvp.Key)) {
+            List<string> needDeleteFileList = new List<string>();
+            foreach (KeyValuePair<string, string> kvp in s_allFilesMd5LastVersion) {
+                if (s_allFilesMd5NowVersion.ContainsKey(kvp.Key)) {
                     continue;
                 } else {
-                    _needDeleteFileList.Add(kvp.Key);
+                    needDeleteFileList.Add(kvp.Key);
                 }
             }
-            return _needDeleteFileList;
+            return needDeleteFileList;
         }
 
-        private static VersionFileModel _versionFile = new VersionFileModel();
-        private static VersionFileModel LoadVersionFileOnDisk()
+        /// <summary>
+        /// 加载版本文件
+        /// </summary>
+        /// <returns></returns>
+        private static VersionFileModel LoadVersionFile()
         {
-            _versionFile = new VersionFileModel();
-            if (File.Exists(_verionFileName)) {
+            s_versionFile = new VersionFileModel();
+            if (File.Exists(s_verionFileName)) {
                 try {
-                    string content = File.ReadAllText(_verionFileName);
-                    VersionHelper.ParseVersionFile(content, ref _versionFile);
+                    string content = File.ReadAllText(s_verionFileName);
+                    VersionHelper.ParseVersionFile(content, ref s_versionFile);
                 } catch (Exception ex) {
                     throw new Exception("Load UpdateFile Error:" + ex.Message);
                 }
             }
-            return _versionFile;
+            return s_versionFile;
         }
 
+        /// <summary>
+        /// 获取新的资源版本
+        /// </summary>
+        /// <returns></returns>
         private static string GetNewResVersion()
         {
             return VersionConfig.res_version;
@@ -269,19 +304,19 @@ namespace AssetBundleFramework
         private static void ExportUpdateFiles(List<string> updatedFiles)
         {
             if (updatedFiles.Count > 0) {
-                _exportPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("/") + 1) + "Bin";
+                s_exportPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("/") + 1) + "Bin";
 #if UNITY_IOS
                 _exportPath += "/iOS";
 #elif UNITY_ANDROID
 			    _exportPath += "/Android";
 #elif UNITY_STANDALONE_WIN
-                _exportPath += "/Win";
+                s_exportPath += "/Win";
 #elif UNITY_STANDALONE_OSX
                 _exportPath += "/OSX";
 #endif
-                _exportPath = string.Format("{0}/{1}/{2}", _exportPath, VersionConfig.app_version, GetNewResVersion());
+                s_exportPath = string.Format("{0}/{1}/{2}", s_exportPath, VersionConfig.app_version, GetNewResVersion());
                 for (int i = 0; i < updatedFiles.Count; i++) {
-                    string assetbundleDestPath = _exportPath + "/" + updatedFiles[i];
+                    string assetbundleDestPath = s_exportPath + "/" + updatedFiles[i];
                     string assetbundleSrcPath = AssetsPath + "/" + updatedFiles[i];
                     string destDir = Path.GetDirectoryName(assetbundleDestPath);
                     if (!Directory.Exists(destDir)) {
@@ -290,8 +325,8 @@ namespace AssetBundleFramework
                     File.Copy(assetbundleSrcPath, assetbundleDestPath, true);
                 }
             }
-            string versionFileSrcPath = _verionFileName;
-            string versionFileDestPath = _exportPath + "/" + Path.GetFileName(versionFileSrcPath);
+            string versionFileSrcPath = s_verionFileName;
+            string versionFileDestPath = s_exportPath + "/" + Path.GetFileName(versionFileSrcPath);
             string updateFileDestDir = Path.GetDirectoryName(versionFileDestPath);
             if (!Directory.Exists(updateFileDestDir)) {
                 Directory.CreateDirectory(updateFileDestDir);
@@ -301,8 +336,8 @@ namespace AssetBundleFramework
 
         private static void WriteVersionFiles()
         {
-            string str = VersionHelper.ConvertVersionFileToString(_versionFile);
-            File.WriteAllText(_verionFileName, str);
+            string str = VersionHelper.ConvertVersionFileToString(s_versionFile);
+            File.WriteAllText(s_verionFileName, str);
         }
 
         /// <summary>
@@ -324,6 +359,9 @@ namespace AssetBundleFramework
             AssetBundleBuilder.BuildAssetBundle();
         }
 
+        /// <summary>
+        /// 构建的文本资源
+        /// </summary>
         private static void BuildText()
         {
             TextBuilder.BuildText();

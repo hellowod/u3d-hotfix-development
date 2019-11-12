@@ -16,6 +16,10 @@ namespace AssetBundleFramework
     {
         public static string AssetBundle_Path = Application.streamingAssetsPath;
 
+        private static List<AssetNode> s_leafNodes = new List<AssetNode>();
+        private static Dictionary<string, AssetNode> s_allAssetNodes = new Dictionary<string, AssetNode>();
+        private static List<string> s_buildMap = new List<string>();
+
         //需要打包的资源路径（相对于Assets目录），通常是prefab,lua,及其他数据。（贴图，动画，模型，材质等可以通过依赖自己关联上，不需要添加在该路径里，除非是特殊需要）
         //注意这里是目录，单独零散的文件，可以新建一个目录，都放在里面打包
         public static List<string> abResourcePath = new List<string>()
@@ -58,15 +62,14 @@ namespace AssetBundleFramework
 
         private static void Init()
         {
-            _buildMap.Clear();
-            _leafNodes.Clear();
-            _allAssetNodes.Clear();
+            s_buildMap.Clear();
+            s_leafNodes.Clear();
+            s_allAssetNodes.Clear();
         }
 
-        private static List<AssetNode> _leafNodes = new List<AssetNode>();
-        private static Dictionary<string, AssetNode> _allAssetNodes = new Dictionary<string, AssetNode>();
-        private static List<string> _buildMap = new List<string>();
-
+        /// <summary>
+        /// 收集资源依赖
+        /// </summary>
         private static void CollectDependcy()
         {
             for (int i = 0; i < abResourcePath.Count; i++) {
@@ -83,11 +86,11 @@ namespace AssetBundleFramework
                         string fileRelativePath = GetReleativeToAssets(files[j].FullName);
                         AssetNode root = null;
                         //文件可能在上一个文件的依赖关系中被处理了
-                        _allAssetNodes.TryGetValue(fileRelativePath, out root);
+                        s_allAssetNodes.TryGetValue(fileRelativePath, out root);
                         if (root == null) {
                             root = new AssetNode();
                             root.path = fileRelativePath;
-                            _allAssetNodes[root.path] = root;
+                            s_allAssetNodes[root.path] = root;
                             GetDependcyRecursive(fileRelativePath, root);
                         }
                     }
@@ -96,18 +99,23 @@ namespace AssetBundleFramework
             //PrintDependcy();
         }
 
+        /// <summary>
+        /// 递归依赖查找
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="parentNode"></param>
         private static void GetDependcyRecursive(string path, AssetNode parentNode)
         {
             string[] dependcy = AssetDatabase.GetDependencies(path, false);
             for (int i = 0; i < dependcy.Length; i++) {
                 AssetNode node = null;
-                _allAssetNodes.TryGetValue(dependcy[i], out node);
+                s_allAssetNodes.TryGetValue(dependcy[i], out node);
                 if (node == null) {
                     node = new AssetNode();
                     node.path = dependcy[i];
                     node.depth = parentNode.depth + 1;
                     node.parents.Add(parentNode);
-                    _allAssetNodes[node.path] = node;
+                    s_allAssetNodes[node.path] = node;
                     GetDependcyRecursive(dependcy[i], node);
                 } else {
                     if (!node.parents.Contains(parentNode)) {
@@ -122,8 +130,8 @@ namespace AssetBundleFramework
                 //Debug.Log("dependcy path is " +dependcy[i] + " parent is " + parentNode.path);
             }
             if (dependcy.Length == 0) {
-                if (!_leafNodes.Contains(parentNode)) {
-                    _leafNodes.Add(parentNode);
+                if (!s_leafNodes.Contains(parentNode)) {
+                    s_leafNodes.Add(parentNode);
                 }
             }
         }
@@ -133,25 +141,25 @@ namespace AssetBundleFramework
         private static void BuildResourceBuildMap()
         {
             int maxDepth = GetMaxDepthOfLeafNodes();
-            while (_leafNodes.Count > 0) {
+            while (s_leafNodes.Count > 0) {
                 List<AssetNode> _curDepthNodesList = new List<AssetNode>();
-                for (int i = 0; i < _leafNodes.Count; i++) {
-                    if (_leafNodes[i].depth == maxDepth) {
+                for (int i = 0; i < s_leafNodes.Count; i++) {
+                    if (s_leafNodes[i].depth == maxDepth) {
                         //如果叶子节点有多个父节点或者没有父节点,打包该叶子节点
-                        if (_leafNodes[i].parents.Count != 1) {
-                            if (!ShouldIgnoreFile(_leafNodes[i].path)) {
-                                _buildMap.Add(_leafNodes[i].path);
+                        if (s_leafNodes[i].parents.Count != 1) {
+                            if (!ShouldIgnoreFile(s_leafNodes[i].path)) {
+                                s_buildMap.Add(s_leafNodes[i].path);
                             }
                         }
-                        _curDepthNodesList.Add(_leafNodes[i]);
+                        _curDepthNodesList.Add(s_leafNodes[i]);
                     }
                 }
                 //删除已经遍历过的叶子节点，并把这些叶子节点的父节点添加到新一轮的叶子节点中
                 for (int i = 0; i < _curDepthNodesList.Count; i++) {
-                    _leafNodes.Remove(_curDepthNodesList[i]);
+                    s_leafNodes.Remove(_curDepthNodesList[i]);
                     foreach (AssetNode node in _curDepthNodesList[i].parents) {
-                        if (!_leafNodes.Contains(node)) {
-                            _leafNodes.Add(node);
+                        if (!s_leafNodes.Contains(node)) {
+                            s_leafNodes.Add(node);
                         }
                     }
                 }
@@ -161,30 +169,31 @@ namespace AssetBundleFramework
 
         private static bool ShouldIgnoreFile(string path)
         {
-            if (path.EndsWith(".cs"))
+            if (path.EndsWith(".cs")) {
                 return true;
+            }
             return false;
         }
 
         private static int GetMaxDepthOfLeafNodes()
         {
-            if (_leafNodes.Count == 0) {
+            if (s_leafNodes.Count == 0) {
                 return 0;
             }
-            _leafNodes.Sort((x, y) => {
+            s_leafNodes.Sort((x, y) => {
                 return y.depth - x.depth;
             });
-            return _leafNodes[0].depth;
+            return s_leafNodes[0].depth;
         }
 
         private static void BuildAssetBundleWithBuildMap()
         {
             string prefix = "Assets";
-            AssetBundleBuild[] buildMapArray = new AssetBundleBuild[_buildMap.Count];
-            for (int i = 0; i < _buildMap.Count; i++) {
-                buildMapArray[i].assetBundleName = _buildMap[i].Substring(prefix.Length + 1);
-                buildMapArray[i].assetNames = new string[] { _buildMap[i] };
-                Debug.Log(_buildMap[i]);
+            AssetBundleBuild[] buildMapArray = new AssetBundleBuild[s_buildMap.Count];
+            for (int i = 0; i < s_buildMap.Count; i++) {
+                buildMapArray[i].assetBundleName = s_buildMap[i].Substring(prefix.Length + 1);
+                buildMapArray[i].assetNames = new string[] { s_buildMap[i] };
+                Debug.Log(s_buildMap[i]);
             }
             if (!Directory.Exists(AssetBundle_Path)) {
                 Directory.CreateDirectory(AssetBundle_Path);
@@ -203,8 +212,9 @@ namespace AssetBundleFramework
 
         private static bool CheckFileSuffixNeedIgnore(string fileName)
         {
-            if (fileName.EndsWith(".meta") || fileName.EndsWith(".DS_Store") || fileName.EndsWith(".cs"))
+            if (fileName.EndsWith(".meta") || fileName.EndsWith(".DS_Store") || fileName.EndsWith(".cs")) {
                 return true;
+            }
             return false;
         }
     }
