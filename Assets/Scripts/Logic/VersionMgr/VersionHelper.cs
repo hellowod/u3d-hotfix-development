@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace AssetBundleFramework
+namespace Framework
 {
     public class VersionConfig
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 
-namespace AssetBundleFramework
+namespace Framework
 {
     public enum VersionType
     {
@@ -14,8 +14,8 @@ namespace AssetBundleFramework
 
     public class VersionMgr
     {
-        private string _resVersion = "0.0";
-        private string _appVersion = "1.0";
+        private string m_appVersion = "1.0";
+        private string m_resVersion = "0.0";
 
         class VersionResultFromServer
         {
@@ -23,7 +23,13 @@ namespace AssetBundleFramework
             public string serverResVersion;
             public VersionType versionType = VersionType.None;
         }
-        private VersionResultFromServer _serverResult = null;
+
+        private VersionResultFromServer m_serverResult = null;
+        private VersionFileModel m_lastVersionFile = null;
+        private VersionFileModel m_versionFileOnServer = null;
+        private int m_downloadIndex = 0;
+
+        private List<string> m_needUpdateFileList = new List<string>();
 
         public static VersionMgr instance = null;
 
@@ -32,36 +38,35 @@ namespace AssetBundleFramework
             instance = this;
         }
 
-        private VersionFileModel _lastVersionFile = null;
-
-        void GetClientVersion()
+        private void GetClientVersion()
         {
-            _appVersion = VersionConfig.app_version;
-            if (_lastVersionFile != null) {
-                _resVersion = _lastVersionFile.resVersion;
+            m_appVersion = VersionConfig.app_version;
+            if (m_lastVersionFile != null) {
+                m_resVersion = m_lastVersionFile.resVersion;
                 return;
             }
             string verionFilePath = string.Format("{0}/{1}", DownloadConfig.downLoadPath, VersionConfig.VersionFileName);
-            //获得上一次客户端更新到的版本
+            // 获得上一次客户端更新到的版本
             string content = SimpleLoader.LoadText(verionFilePath);
+            Debug.LogError(content);
             if (string.IsNullOrEmpty(content)) {
-                _resVersion = VersionConfig.res_version;
+                m_resVersion = VersionConfig.res_version;
             } else {
-                VersionHelper.ParseVersionFile(content, ref _lastVersionFile);
-                _resVersion = _lastVersionFile.resVersion;
+                VersionHelper.ParseVersionFile(content, ref m_lastVersionFile);
+                m_resVersion = m_lastVersionFile.resVersion;
             }
         }
 
         public void StartCheckVersion()
         {
             GetClientVersion();
-            _serverResult = CheckVersionFromServer(_appVersion, _resVersion);
-            if (_serverResult.versionType == VersionType.App) {
+            m_serverResult = CheckVersionFromServer(m_appVersion, m_resVersion);
+            if (m_serverResult.versionType == VersionType.App) {
                 //提示下载新的APP，新的下载地址result.downloadUrl
                 return;
-            } else if (_serverResult.versionType == VersionType.Res) {
+            } else if (m_serverResult.versionType == VersionType.Res) {
                 DownloadVersionFile();
-            } else if (_serverResult.versionType == VersionType.None) {
+            } else if (m_serverResult.versionType == VersionType.None) {
                 //验证通过，直接进入游戏
             }
         }
@@ -79,7 +84,7 @@ namespace AssetBundleFramework
             return result;
         }
 
-        string ConnectDownloadUrlWithPlatform(string url)
+        private string ConnectDownloadUrlWithPlatform(string url)
         {
 #if UNITY_IOS
             return string.Format("{0}/{1}/{2}", url, "iOS", _appVersion);
@@ -88,21 +93,19 @@ namespace AssetBundleFramework
 #elif UNITY_STANDALONE_OSX
             return string.Format("{0}/{1}/{2}", url, "OSX", _appVersion);
 #elif UNITY_STANDALONE_WIN
-            return string.Format("{0}/{1}/{2}", url, "Win", _appVersion);
+            return string.Format("{0}/{1}/{2}", url, "Win", m_appVersion);
 #endif
         }
 
-        void DownloadVersionFile(float delay = -1)
+        private void DownloadVersionFile(float delay = -1)
         {
             //首先下载updateFile文件，然后从updateFile文件里面下载需要更新的资源
             Debug.Log("Begin download version files");
-            string versionFileDownUrl = string.Format("{0}/{1}/{2}", _serverResult.downloadBaseUrl, _serverResult.serverResVersion, VersionConfig.VersionFileName);
+            string versionFileDownUrl = string.Format("{0}/{1}/{2}", m_serverResult.downloadBaseUrl, m_serverResult.serverResVersion, VersionConfig.VersionFileName);
             DownloadMgr.instance.Download(versionFileDownUrl, OnVersionFileDownload, delay);
         }
 
-        private VersionFileModel _versionFileOnServer = null;
-        private int _downloadIndex = 0;
-        void OnVersionFileDownload(WWW www)
+        private void OnVersionFileDownload(WWW www)
         {
             if (www == null) {
                 //如果下载失败，等待1s后重新下载，可以是个逐渐增长的等待时间
@@ -110,27 +113,26 @@ namespace AssetBundleFramework
                 return;
             }
             string content = www.text;
-            _downloadIndex = 0;
-            VersionHelper.ParseVersionFile(content, ref _versionFileOnServer);
+            m_downloadIndex = 0;
+            VersionHelper.ParseVersionFile(content, ref m_versionFileOnServer);
             GenerateUpdateFilesList();
-            DownloadUpdateFiles(_downloadIndex);
+            DownloadUpdateFiles(m_downloadIndex);
         }
-
-        private List<string> _needUpdateFileList = new List<string>();
-        void GenerateUpdateFilesList()
+        
+        private void GenerateUpdateFilesList()
         {
-            _needUpdateFileList.Clear();
-            if (_versionFileOnServer == null) {
+            m_needUpdateFileList.Clear();
+            if (m_versionFileOnServer == null) {
                 return;
             }
             Dictionary<string, VersionFileInfo> _allFileDic = new Dictionary<string, VersionFileInfo>();
-            if (_lastVersionFile == null) {
-                _allFileDic = _versionFileOnServer.files;
+            if (m_lastVersionFile == null) {
+                _allFileDic = m_versionFileOnServer.files;
             } else {
                 //通过比较2次的updateFile生成需要更新的文件
-                foreach (KeyValuePair<string, VersionFileInfo> kvp in _versionFileOnServer.files) {
+                foreach (KeyValuePair<string, VersionFileInfo> kvp in m_versionFileOnServer.files) {
                     VersionFileInfo lastFileInfo = null;
-                    _lastVersionFile.files.TryGetValue(kvp.Key, out lastFileInfo);
+                    m_lastVersionFile.files.TryGetValue(kvp.Key, out lastFileInfo);
                     if (lastFileInfo == null || lastFileInfo.md5 != kvp.Value.md5) {
                         _allFileDic[kvp.Key] = kvp.Value;
                     }
@@ -141,44 +143,44 @@ namespace AssetBundleFramework
                 if (File.Exists(filesDownloadPath)) {
                     string md5 = VersionHelper.GetMd5Val(filesDownloadPath);
                     if (!string.Equals(md5, kvp.Value.md5)) {
-                        _needUpdateFileList.Add(kvp.Key);
+                        m_needUpdateFileList.Add(kvp.Key);
                     }
                 } else {
-                    _needUpdateFileList.Add(kvp.Key);
+                    m_needUpdateFileList.Add(kvp.Key);
                 }
             }
         }
 
-        void DownloadUpdateFiles(int index, float delay = -1)
+        private void DownloadUpdateFiles(int index, float delay = -1)
         {
-            if (index >= _needUpdateFileList.Count) {
+            if (index >= m_needUpdateFileList.Count) {
                 //下载完所有更新文件之后，写入新的updateFile
-                _lastVersionFile = _versionFileOnServer;
-                WriteVersionFileToDisk();
+                m_lastVersionFile = m_versionFileOnServer;
+                WriteVersionFile();
                 return;
             }
-            Debug.Log("Begin download update files " + _needUpdateFileList[index]);
-            string version = _versionFileOnServer.files[_needUpdateFileList[index]].version;
-            string downloadUrl = string.Format("{0}/{1}/{2}", _serverResult.downloadBaseUrl, version, _needUpdateFileList[index]);
+            Debug.Log("Begin download update files " + m_needUpdateFileList[index]);
+            string version = m_versionFileOnServer.files[m_needUpdateFileList[index]].version;
+            string downloadUrl = string.Format("{0}/{1}/{2}", m_serverResult.downloadBaseUrl, version, m_needUpdateFileList[index]);
             DownloadMgr.instance.Download(downloadUrl, OnUpdateFileDownloadFinised);
         }
 
-        void OnUpdateFileDownloadFinised(WWW www)
+        private void OnUpdateFileDownloadFinised(WWW www)
         {
             if (www == null) {
                 //如果下载失败，等待1s后重新下载，可以是个逐渐增长的等待时间
-                DownloadUpdateFiles(_downloadIndex, 1.0f);
+                DownloadUpdateFiles(m_downloadIndex, 1.0f);
                 return;
             }
             byte[] content = www.bytes;
-            string writePath = string.Format("{0}/{1}", DownloadConfig.downLoadPath, _needUpdateFileList[_downloadIndex]);
-            if (WriteUpdateFileToDisk(writePath, content)) {
-                _downloadIndex += 1;
-                DownloadUpdateFiles(_downloadIndex);
+            string writePath = string.Format("{0}/{1}", DownloadConfig.downLoadPath, m_needUpdateFileList[m_downloadIndex]);
+            if (WriteUpdateFile(writePath, content)) {
+                m_downloadIndex += 1;
+                DownloadUpdateFiles(m_downloadIndex);
             }
         }
 
-        bool WriteUpdateFileToDisk(string path, byte[] content)
+        private bool WriteUpdateFile(string path, byte[] content)
         {
             try {
                 string dir = path.Substring(0, path.LastIndexOf("/"));
@@ -197,16 +199,16 @@ namespace AssetBundleFramework
             return false;
         }
 
-        void WriteVersionFileToDisk()
+        private void WriteVersionFile()
         {
-            string str = VersionHelper.ConvertVersionFileToString(_versionFileOnServer);
+            string str = VersionHelper.ConvertVersionFileToString(m_versionFileOnServer);
             string versionFilePath = string.Format("{0}/{1}", DownloadConfig.downLoadPath, VersionConfig.VersionFileName);
             File.WriteAllText(versionFilePath, str, System.Text.Encoding.UTF8);
         }
 
         public bool CheckFileIsInVersionFile(string path)
         {
-            if (_lastVersionFile != null && _lastVersionFile.files.ContainsKey(path)) {
+            if (m_lastVersionFile != null && m_lastVersionFile.files.ContainsKey(path)) {
                 return true;
             }
             return false;

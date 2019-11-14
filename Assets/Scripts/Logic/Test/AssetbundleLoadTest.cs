@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-namespace AssetBundleFramework
+namespace Framework
 {
 public class AssetbundleLoadTest : MonoBehaviour {
 

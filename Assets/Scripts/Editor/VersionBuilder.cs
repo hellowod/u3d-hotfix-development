@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 
-namespace AssetBundleFramework
+namespace Framework
 {
     public class VersionBuilder : Editor
     {
@@ -364,7 +364,7 @@ namespace AssetBundleFramework
         /// </summary>
         private static void BuildText()
         {
-            TextBuilder.BuildText();
+            AssetTextBuilder.BuildText();
         }
     }
 }

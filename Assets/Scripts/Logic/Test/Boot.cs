@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace AssetBundleFramework	
+namespace Framework	
 {
 public class Boot : MonoBehaviour {
 

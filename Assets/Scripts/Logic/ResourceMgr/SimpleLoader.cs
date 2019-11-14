@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
-namespace AssetBundleFramework
+namespace Framework
 {
     public class SimpleLoader
     {
-        static string RES_ROOT_PATH = Application.dataPath;
+        private static string RES_ROOT_PATH = Application.dataPath;
+
         public static T Load<T>(string path) where T : Object
         {
 #if UNITY_EDITOR && !LOAD_ASSETBUNDLE_INEDITOR
@@ -19,8 +20,9 @@ namespace AssetBundleFramework
         public static GameObject InstantiateGameObject(string path, string suffix = ".prefab")
         {
             GameObject go = Load<GameObject>(path + suffix);
-            if (go != null)
+            if (go != null) {
                 return GameObject.Instantiate(go);
+            }
             return null;
         }
 

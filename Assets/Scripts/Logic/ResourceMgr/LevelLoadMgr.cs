@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace AssetBundleFramework
+namespace Framework
 {
 public class LevelLoadMgr
 {

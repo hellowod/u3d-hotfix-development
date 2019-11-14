@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-namespace AssetBundleFramework
+namespace Framework
 {
     public static class DownloadConfig
     {
@@ -19,7 +19,7 @@ namespace AssetBundleFramework
 
         public static DownloadMgr instance = null;
 
-        void Awake()
+        private void Awake()
         {
             instance = this;
         }
@@ -29,10 +29,11 @@ namespace AssetBundleFramework
             StartCoroutine(DownloadCoroutine(url, downloadFinishedCallback, delay));
         }
 
-        IEnumerator DownloadCoroutine(string url, Action<WWW> downloadFinishedCallback, float delay)
+        private IEnumerator DownloadCoroutine(string url, Action<WWW> downloadFinishedCallback, float delay)
         {
-            if (delay > 0)
+            if (delay > 0) {
                 yield return new WaitForSeconds(delay);
+            }
             WWW www = new WWW(url);
             yield return www;
             if (string.IsNullOrEmpty(www.error) && www.isDone) {
