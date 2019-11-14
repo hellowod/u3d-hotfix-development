@@ -1,17 +1,15 @@
-StreamingAssets,ce997338b0b026a63fb9a64dbc41516c
-materials\barrel.mat,603a3fc3e3c85a3db2c3907d273886ea
-materials\book.mat,3e6d81a19daeba29c5eb12b7a7722524
-meshes\barrel_01.fbx,f4ac9582d49e6685172ed695efe495db
-meshes\book_01.fbx,8012991ffa6905198e609ec2289977f9
-prefabs\barrel_01.prefab,de6c41b9ec20f3c7bf76574496fd2671
-prefabs\barrel_02.prefab,2a3c89c2db1268cc4042815826bf6602
-prefabs\book_01.prefab,4e7585dfc312b2cd20c0f35800ad8dd7
-prefabs\book_02.prefab,5bdd3c702f4ad710c43ef108aeac4cba
-prefabs\book_03.prefab,39ab97a18bb38e2a7509ee06648649ef
-prefabs\book_04.prefab,b4965764ac1783b8b3ad5e1f76b1a40b
-StaticData\Test 1.txt,3f0df51e0d2bcc658d10e98c692b4b60
-StaticData\Test 2.txt,3f0df51e0d2bcc658d10e98c692b4b60
-StaticData\Test 3.txt,3f0df51e0d2bcc658d10e98c692b4b60
-StaticData\Test 4.txt,3f0df51e0d2bcc658d10e98c692b4b60
-StaticData\Test 5.txt,3f0df51e0d2bcc658d10e98c692b4b60
-StaticData\Test.txt,3f0df51e0d2bcc658d10e98c692b4b60
+StreamingAssets,209dc3aa07aecb2851d1c4c3d7ff58eb
+art\Config\Test 1.txt,3f0df51e0d2bcc658d10e98c692b4b60
+art\Config\Test 2.txt,3f0df51e0d2bcc658d10e98c692b4b60
+art\Config\Test 3.txt,3f0df51e0d2bcc658d10e98c692b4b60
+art\Config\Test 4.txt,3f0df51e0d2bcc658d10e98c692b4b60
+art\Config\Test 5.txt,3f0df51e0d2bcc658d10e98c692b4b60
+art\Config\Test.txt,3f0df51e0d2bcc658d10e98c692b4b60
+art\model\barrel_01.fbx,d84b5820b127ac21dbd95b1dd5037496
+art\model\book_01.fbx,84c14987944c4e1f2e868e0e90fb8b33
+art\model\materials\barrel_01.mat,cecb9a75f851903aeee72d549afde2c3
+art\model\materials\book_01.mat,1660186c1f799e8080d7656b6f708055
+art\prefab\barrel_01.prefab,c6b813b143319eaeea5a6160389ac2c2
+art\prefab\barrel_02.prefab,2c175c6a73a63a1bfd1ed36d157df01d
+art\prefab\book_01.prefab,a32f192442d2199b462058ef689eab49
+art\prefab\book_02.prefab,1f9f3c4d160bc0c4c316123310a317b2
