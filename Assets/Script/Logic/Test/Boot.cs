@@ -1,19 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Framework	
+namespace Framework
 {
-public class Boot : MonoBehaviour {
+    public class Boot : MonoBehaviour
+    {
+        private void Start()
+        {
+            VersionMgr versionMgr = new VersionMgr();
+            versionMgr.StartCheckVersion();
+        }
 
-	// Use this for initialization
-	void Start () {
-		VersionMgr versionMgr = new VersionMgr();
-		versionMgr.StartCheckVersion();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-}
+        private void Update()
+        {
+
+        }
+    }
 }

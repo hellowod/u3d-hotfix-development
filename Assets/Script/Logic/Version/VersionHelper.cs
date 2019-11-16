@@ -5,13 +5,6 @@ using System.Text;
 
 namespace Framework
 {
-    public class VersionConfig
-    {
-        public static string app_version = "1.0";
-        public static string res_version = "0";
-        public static string VersionFileName = "VersionFile.txt";
-    }
-
     public class VersionFileInfo
     {
         private string m_md5;

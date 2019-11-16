@@ -35,7 +35,7 @@ namespace Framework
             _versionFilesPath += "OSX/";
 #endif
             s_versionMD5FileName = s_versionFilesPath + s_versionMD5FileName;
-            s_verionFileName = s_versionFilesPath + VersionConfig.VersionFileName;
+            s_verionFileName = s_versionFilesPath + VersionConfig.s_versionFileName;
         }
 
         [MenuItem("Tool/Version/CleanBuildApp")]
@@ -102,7 +102,7 @@ namespace Framework
                 Debug.LogError("Load last update file failed!");
                 return false;
             }
-            if (s_versionFile.resVersion == VersionConfig.res_version) {
+            if (s_versionFile.resVersion == VersionConfig.s_resVersion) {
                 Debug.LogError("You must change your res_verion in version config if you want to publish a patch");
                 return false;
             }
@@ -294,7 +294,7 @@ namespace Framework
         /// <returns></returns>
         private static string GetNewResVersion()
         {
-            return VersionConfig.res_version;
+            return VersionConfig.s_resVersion;
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace Framework
 #elif UNITY_STANDALONE_OSX
                 _exportPath += "/OSX";
 #endif
-                s_exportPath = string.Format("{0}/{1}/{2}", s_exportPath, VersionConfig.app_version, GetNewResVersion());
+                s_exportPath = string.Format("{0}/{1}/{2}", s_exportPath, VersionConfig.s_appVersion, GetNewResVersion());
                 for (int i = 0; i < updatedFiles.Count; i++) {
                     string assetbundleDestPath = s_exportPath + "/" + updatedFiles[i];
                     string assetbundleSrcPath = AssetsPath + "/" + updatedFiles[i];

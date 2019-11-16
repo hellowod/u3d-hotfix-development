@@ -38,25 +38,32 @@ namespace Framework
             instance = this;
         }
 
+        /// <summary>
+        /// 获取客户端版本
+        /// </summary>
         private void GetClientVersion()
         {
-            m_appVersion = VersionConfig.app_version;
+            m_appVersion = VersionConfig.s_appVersion;
             if (m_lastVersionFile != null) {
                 m_resVersion = m_lastVersionFile.resVersion;
                 return;
             }
-            string verionFilePath = string.Format("{0}/{1}", DownloadConfig.downLoadPath, VersionConfig.VersionFileName);
+            string verionFilePath = string.Format("{0}/{1}", DownloadConfig.downLoadPath, VersionConfig.s_versionFileName);
             // 获得上一次客户端更新到的版本
+            Debug.LogError(verionFilePath);
             string content = SimpleLoader.LoadText(verionFilePath);
             Debug.LogError(content);
             if (string.IsNullOrEmpty(content)) {
-                m_resVersion = VersionConfig.res_version;
+                m_resVersion = VersionConfig.s_resVersion;
             } else {
                 VersionHelper.ParseVersionFile(content, ref m_lastVersionFile);
                 m_resVersion = m_lastVersionFile.resVersion;
             }
         }
 
+        /// <summary>
+        /// 开始检查版本
+        /// </summary>
         public void StartCheckVersion()
         {
             GetClientVersion();
@@ -71,7 +78,13 @@ namespace Framework
             }
         }
 
-        VersionResultFromServer CheckVersionFromServer(string appVersion, string resVersion)
+        /// <summary>
+        /// 服务器获取版本信息
+        /// </summary>
+        /// <param name="appVersion"></param>
+        /// <param name="resVersion"></param>
+        /// <returns></returns>
+        private VersionResultFromServer CheckVersionFromServer(string appVersion, string resVersion)
         {
             VersionResultFromServer result = new VersionResultFromServer();
             //result.downloadBaseUrl = "file:///Users/yr/GamePatch";
@@ -101,7 +114,7 @@ namespace Framework
         {
             //首先下载updateFile文件，然后从updateFile文件里面下载需要更新的资源
             Debug.Log("Begin download version files");
-            string versionFileDownUrl = string.Format("{0}/{1}/{2}", m_serverResult.downloadBaseUrl, m_serverResult.serverResVersion, VersionConfig.VersionFileName);
+            string versionFileDownUrl = string.Format("{0}/{1}/{2}", m_serverResult.downloadBaseUrl, m_serverResult.serverResVersion, VersionConfig.s_versionFileName);
             DownloadMgr.instance.Download(versionFileDownUrl, OnVersionFileDownload, delay);
         }
 
@@ -202,7 +215,7 @@ namespace Framework
         private void WriteVersionFile()
         {
             string str = VersionHelper.ConvertVersionFileToString(m_versionFileOnServer);
-            string versionFilePath = string.Format("{0}/{1}", DownloadConfig.downLoadPath, VersionConfig.VersionFileName);
+            string versionFilePath = string.Format("{0}/{1}", DownloadConfig.downLoadPath, VersionConfig.s_versionFileName);
             File.WriteAllText(versionFilePath, str, System.Text.Encoding.UTF8);
         }
 

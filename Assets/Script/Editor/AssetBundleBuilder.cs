@@ -123,9 +123,11 @@ namespace Framework
                     GetDependcyRecursive(dependcy[i], node);
                 } else {
                     if (!node.parents.Contains(parentNode)) {
+                        Debug.LogError("aaaa="+ node.path);
                         node.parents.Add(parentNode);
                     }
                     if (node.depth < parentNode.depth + 1) {
+                        Debug.LogError("bbbb=" + node.path);
                         node.depth = parentNode.depth + 1;
                         GetDependcyRecursive(dependcy[i], node);
                     }
