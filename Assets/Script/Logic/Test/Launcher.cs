@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Framework
 {
-    public class Boot : MonoBehaviour
+    public class Launcher : MonoBehaviour
     {
         private void Start()
         {

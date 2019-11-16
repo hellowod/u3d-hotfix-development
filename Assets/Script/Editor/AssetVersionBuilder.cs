@@ -26,9 +26,9 @@ namespace Framework
         static AssetVersionBuilder()
         {
 #if UNITY_IOS
-            _versionFilesPath += "iOS/";
+            s_versionFilesPath += "iOS/";
 #elif UNITY_ANDROID
-			_versionFilesPath += "Android/";
+            s_versionFilesPath += "Android/";
 #elif UNITY_STANDALONE_WIN
             s_versionFilesPath += "Win/";
 #elif UNITY_STANDALONE_OSX
@@ -304,15 +304,15 @@ namespace Framework
         private static void ExportUpdateFiles(List<string> updatedFiles)
         {
             if (updatedFiles.Count > 0) {
-                s_exportPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("/") + 1) + "Bin";
+                s_exportPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("/") + 1) + "Bin/Patch";
 #if UNITY_IOS
-                _exportPath += "/iOS";
+                s_exportPath += "/iOS";
 #elif UNITY_ANDROID
-			    _exportPath += "/Android";
+                s_exportPath += "/Android";
 #elif UNITY_STANDALONE_WIN
                 s_exportPath += "/Win";
 #elif UNITY_STANDALONE_OSX
-                _exportPath += "/OSX";
+                s_exportPath += "/OSX";
 #endif
                 s_exportPath = string.Format("{0}/{1}/{2}", s_exportPath, VersionConfig.s_appVersion, GetNewResVersion());
                 for (int i = 0; i < updatedFiles.Count; i++) {

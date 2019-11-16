@@ -6,21 +6,21 @@ namespace Framework
 {
     public static class DownloadConfig
     {
-        public static string downLoadPath = "";
+        public static string s_downLoadPath = "";
 
         static DownloadConfig()
         {
-            downLoadPath = Application.persistentDataPath;
+            s_downLoadPath = Application.persistentDataPath;
         }
     }
 
     public class DownloadMgr : MonoBehaviour
     {
-        public static DownloadMgr instance = null;
+        public static DownloadMgr Instance = null;
 
         private void Awake()
         {
-            instance = this;
+            Instance = this;
         }
 
         public void Download(string url, Action<WWW> downloadFinishedCallback, float delay = -1)

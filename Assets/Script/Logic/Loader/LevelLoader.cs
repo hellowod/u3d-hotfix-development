@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace Framework
 {
-    public class LevelLoadMgr
+    public class LevelLoader
     {
         public static void LoadLevelSync(string scene)
         {

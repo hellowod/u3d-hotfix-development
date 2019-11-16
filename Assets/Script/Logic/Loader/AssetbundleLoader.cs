@@ -10,7 +10,7 @@ namespace Framework
         public static string ROOT_PATH = "";
 
         private const string MANIFEST_SUFFIX = ".manifest";
-        public static string Download_Path = DownloadConfig.downLoadPath;
+        public static string Download_Path = DownloadConfig.s_downLoadPath;
         private static AssetBundleManifest s_manifest;
 
         private static Dictionary<string, AssetBundle> s_assetbundleDic = new Dictionary<string, AssetBundle>();
@@ -58,7 +58,7 @@ namespace Framework
             if (bundle != null) {
                 return bundle;
             }
-            if (VersionMgr.instance.CheckFileIsInVersionFile(path)) {
+            if (VersionMgr.Instance.CheckFileIsInVersionFile(path)) {
                 string bundlePath = string.Format("{0}/{1}", Download_Path, path);
                 bundle = AssetBundle.LoadFromFile(bundlePath);
             } else {
@@ -85,7 +85,7 @@ namespace Framework
         private static void LoadManifest()
         {
             string assetbundleFile = string.Format("{0}/{1}", ROOT_PATH, "StreamingAssets");
-            if (VersionMgr.instance.CheckFileIsInVersionFile("StreamingAssets")) {
+            if (VersionMgr.Instance.CheckFileIsInVersionFile("StreamingAssets")) {
                 assetbundleFile = string.Format("{0}/{1}", Download_Path, "StreamingAssets");
             }
             AssetBundle bundle = AssetBundle.LoadFromFile(assetbundleFile);
