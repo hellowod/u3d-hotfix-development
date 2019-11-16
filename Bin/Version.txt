@@ -6,4 +6,4 @@ AppiOSURL = "http://10.12.21.75"
 AppWinURL = "http://10.12.21.75"
 AppOSXURL = "http://10.12.21.75"
 ;资源更新基础地址
-ResUpdateURL = "http://10.12.21.75"
+ResUpdateURL = "http://10.12.21.75/Patch/"
