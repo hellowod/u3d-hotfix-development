@@ -34,7 +34,12 @@ namespace Framework
 
     public class VersionFileModel
     {
-        public Dictionary<string, VersionFileInfo> files = new Dictionary<string, VersionFileInfo>();
-        public string resVersion = "0.0";
+        public string ResVersion = "0";
+        public Dictionary<string, VersionFileInfo> FilesDic;
+
+        public VersionFileModel()
+        {
+            FilesDic = new Dictionary<string, VersionFileInfo>();
+        }
     }
 }

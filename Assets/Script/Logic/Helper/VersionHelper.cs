@@ -8,6 +8,42 @@ namespace Framework
     public class VersionHelper
     {
         /// <summary>
+        /// 解析版本信息
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <param name="versionModel"></param>
+        public static void ParseVersion(string txt, ref VersionSvrModel versionModel)
+        {
+            string[] content = txt.Split('\n');
+            if (content != null) {
+                if (versionModel == null) {
+                    versionModel = new VersionSvrModel();
+                }
+                for (int i = 0; i < content.Length; i++) {
+                    string line = content[i];
+                    if (string.IsNullOrEmpty(line)) {
+                        continue;
+                    }
+                    if (line.StartsWith(";")) {
+                        continue;
+                    }
+                    string[] lineArr = line.Split('=');
+                    if (lineArr == null) {
+                        continue;
+                    }
+                    string key = lineArr[0].Trim();
+                    string val = lineArr[1].Trim();
+                    if (key.Equals("Version")) {
+                        versionModel.AppVersion = val.Substring(0, val.LastIndexOf('.'));
+                        versionModel.ResVersion = val.Substring(val.LastIndexOf('.') + 1);
+                    } else if (key.Equals("ResUpdateURL")) {
+                        versionModel.DownloadBaseUrl = val;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// 解析版本文件
         /// </summary>
         /// <param name="txt"></param>
@@ -25,10 +61,10 @@ namespace Framework
                             Debug.LogError("Can not parse last update file with content " + content[i]);
                             return;
                         }
-                        versionFile.files[kvp[0]] = new VersionFileInfo(kvp[1], kvp[2]);
+                        versionFile.FilesDic[kvp[0]] = new VersionFileInfo(kvp[1], kvp[2]);
                     }
                 }
-                versionFile.resVersion = content[content.Length - 1];
+                versionFile.ResVersion = content[content.Length - 1];
             }
         }
 
@@ -40,11 +76,11 @@ namespace Framework
         public static string ConvertVersionFileToString(VersionFileModel versionFile)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (KeyValuePair<string, VersionFileInfo> kvp in versionFile.files) {
+            foreach (KeyValuePair<string, VersionFileInfo> kvp in versionFile.FilesDic) {
                 string content = string.Format("{0},{1},{2}\n", kvp.Key, kvp.Value.md5, kvp.Value.version);
                 sb.Append(content);
             }
-            sb.Append(versionFile.resVersion);
+            sb.Append(versionFile.ResVersion);
             return sb.ToString();
         }
 

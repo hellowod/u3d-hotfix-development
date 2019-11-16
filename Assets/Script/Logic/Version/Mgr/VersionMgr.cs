@@ -7,8 +7,10 @@ namespace Framework
 {
     public class VersionMgr
     {
-        private string m_appVersion = "1.0";
-        private string m_resVersion = "0.0";
+        private const string VERSION_URL = "http://10.12.21.75/Version.txt";
+
+        private string m_appVersion = "";
+        private string m_resVersion = "";
 
         // 版本服务器信息
         private VersionSvrModel m_serverResult = null;
@@ -21,6 +23,8 @@ namespace Framework
         private int m_downloadIndex = 0;
 
         private List<string> m_needUpdateFileList = new List<string>();
+
+        private int m_versionFlagIndex = 0;
 
         public static VersionMgr Instance = null;
 
@@ -35,15 +39,55 @@ namespace Framework
         public void StartCheckVersion()
         {
             GetClientVersion();
-            m_serverResult = CheckVersionFromServer(m_appVersion, m_resVersion);
-            if (m_serverResult.VersionType == VersionType.App) {
-                //提示下载新的APP，新的下载地址result.downloadUrl
-                return;
-            } else if (m_serverResult.VersionType == VersionType.Res) {
-                DownloadVersionFile();
-            } else if (m_serverResult.VersionType == VersionType.None) {
-                //验证通过，直接进入游戏
+            GetServerVersion();
+        }
+
+        public void Update()
+        {
+            if (m_versionFlagIndex > 1) {
+                m_versionFlagIndex = 0;
+                if (m_serverResult.VersionType == VersionType.App) {
+                    Debug.LogError("新版本，需要下载");
+                    return;
+                } else if (m_serverResult.VersionType == VersionType.Res) {
+                    Debug.LogError("新资源，需要下载");
+                    DownloadVersionFile();
+                } else if (m_serverResult.VersionType == VersionType.None) {
+                    Debug.LogError("无更新，直接进入");
+                    LevelLoader.LoadLevelAsync("CreatePlayer");
+                }
             }
+        }
+
+        /// <summary>
+        /// 获取服务器版本
+        /// </summary>
+        private void GetServerVersion()
+        {
+            DownloadMgr.Instance.Download(VERSION_URL, OnVersionDownloadFinish);
+        }
+
+        /// <summary>
+        /// 服务器版本下载完成
+        /// </summary>
+        /// <param name="www"></param>
+        private void OnVersionDownloadFinish(WWW www)
+        {
+            if (www == null) {
+                GetServerVersion();
+                return;
+            }
+            VersionHelper.ParseVersion(www.text, ref m_serverResult);
+            Debug.LogFormat("GameServerVersion:{0}.{1}", m_serverResult.AppVersion, m_serverResult.ResVersion);
+            if (m_serverResult.AppVersion != m_appVersion) {
+                m_serverResult.VersionType = VersionType.App;
+            } else if (m_serverResult.ResVersion != m_resVersion) {
+                m_serverResult.VersionType = VersionType.Res;
+            } else {
+                m_serverResult.VersionType = VersionType.None;
+            }
+            m_serverResult.DownloadBaseUrl = GetDownloadUrlWithPlatform(m_serverResult.DownloadBaseUrl);
+            m_versionFlagIndex++;
         }
 
         /// <summary>
@@ -53,36 +97,20 @@ namespace Framework
         {
             m_appVersion = VersionConfig.s_appVersion;
             if (m_versionFileOnClient != null) {
-                m_resVersion = m_versionFileOnClient.resVersion;
+                m_resVersion = m_versionFileOnClient.ResVersion;
                 return;
             }
-            string verionFilePath = string.Format("{0}/{1}", DownloadConfig.s_downLoadPath, VersionConfig.s_versionFileName);
+            string verionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.s_versionFileName);
             // 获得上一次客户端更新到的版本
             string content = SimpleLoader.LoadText(verionFilePath);
             if (string.IsNullOrEmpty(content)) {
                 m_resVersion = VersionConfig.s_resVersion;
             } else {
                 VersionHelper.ParseVersionFile(content, ref m_versionFileOnClient);
-                m_resVersion = m_versionFileOnClient.resVersion;
+                m_resVersion = m_versionFileOnClient.ResVersion;
             }
-        }
-
-        /// <summary>
-        /// 服务器获取版本信息
-        /// </summary>
-        /// <param name="appVersion"></param>
-        /// <param name="resVersion"></param>
-        /// <returns></returns>
-        private VersionSvrModel CheckVersionFromServer(string appVersion, string resVersion)
-        {
-            VersionSvrModel result = new VersionSvrModel();
-            result.DownloadBaseUrl = "http://10.12.21.75";
-            // 测试的时候改为VersionType.Res,代表资源更新
-            result.VersionType = VersionType.Res;
-            result.ServerResVersion = "0";
-            // 下载地址
-            result.DownloadBaseUrl = GetDownloadUrlWithPlatform(result.DownloadBaseUrl);
-            return result;
+            m_versionFlagIndex++;
+            Debug.LogFormat("GameClientVersion:{0}.{1}", m_appVersion, m_resVersion);
         }
 
         /// <summary>
@@ -111,7 +139,7 @@ namespace Framework
         {
             //首先下载updateFile文件，然后从updateFile文件里面下载需要更新的资源
             Debug.Log("Begin download version files");
-            string versionFileDownUrl = string.Format("{0}/{1}/{2}", m_serverResult.DownloadBaseUrl, m_serverResult.ServerResVersion, VersionConfig.s_versionFileName);
+            string versionFileDownUrl = string.Format("{0}/{1}/{2}", m_serverResult.DownloadBaseUrl, m_serverResult.ResVersion, VersionConfig.s_versionFileName);
             Debug.Log(versionFileDownUrl);
             DownloadMgr.Instance.Download(versionFileDownUrl, OnVersionFileDownloadOnFinsh, delay);
         }
@@ -145,19 +173,19 @@ namespace Framework
             }
             Dictionary<string, VersionFileInfo> allFileDic = new Dictionary<string, VersionFileInfo>();
             if (m_versionFileOnClient == null) {
-                allFileDic = m_versionFileOnServer.files;
+                allFileDic = m_versionFileOnServer.FilesDic;
             } else {
                 //通过比较2次的updateFile生成需要更新的文件
-                foreach (KeyValuePair<string, VersionFileInfo> kvp in m_versionFileOnServer.files) {
+                foreach (KeyValuePair<string, VersionFileInfo> kvp in m_versionFileOnServer.FilesDic) {
                     VersionFileInfo lastFileInfo = null;
-                    m_versionFileOnClient.files.TryGetValue(kvp.Key, out lastFileInfo);
+                    m_versionFileOnClient.FilesDic.TryGetValue(kvp.Key, out lastFileInfo);
                     if (lastFileInfo == null || lastFileInfo.md5 != kvp.Value.md5) {
                         allFileDic[kvp.Key] = kvp.Value;
                     }
                 }
             }
             foreach (KeyValuePair<string, VersionFileInfo> kvp in allFileDic) {
-                string filesDownloadPath = string.Format("{0}/{1}", DownloadConfig.s_downLoadPath, kvp.Key);
+                string filesDownloadPath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, kvp.Key);
                 if (File.Exists(filesDownloadPath)) {
                     string md5 = VersionHelper.GetMd5Val(filesDownloadPath);
                     if (!string.Equals(md5, kvp.Value.md5)) {
@@ -183,7 +211,7 @@ namespace Framework
                 return;
             }
             Debug.Log("Begin download update files " + m_needUpdateFileList[index]);
-            string version = m_versionFileOnServer.files[m_needUpdateFileList[index]].version;
+            string version = m_versionFileOnServer.FilesDic[m_needUpdateFileList[index]].version;
             string downloadUrl = string.Format("{0}/{1}/{2}", m_serverResult.DownloadBaseUrl, version, m_needUpdateFileList[index]);
             DownloadMgr.Instance.Download(downloadUrl, OnUpdateFileDownloadFinised);
         }
@@ -200,8 +228,9 @@ namespace Framework
                 return;
             }
             byte[] content = www.bytes;
-            string writePath = string.Format("{0}/{1}", DownloadConfig.s_downLoadPath, m_needUpdateFileList[m_downloadIndex]);
-            if (WriteUpdateFile(writePath, content)) {
+            string writePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, m_needUpdateFileList[m_downloadIndex]);
+            Debug.LogError(writePath);
+            if (WriteUpdateFile(writePath.Replace('\\', '/'), content)) {
                 m_downloadIndex += 1;
                 DownloadUpdateFiles(m_downloadIndex);
             }
@@ -227,7 +256,7 @@ namespace Framework
                 fs.Dispose();
                 return true;
             } catch (Exception e) {
-                Debug.Log("write download file to disk exception " + e.ToString());
+                Debug.Log("write download file exception " + e.ToString());
             }
             return false;
         }
@@ -238,13 +267,13 @@ namespace Framework
         private void WriteVersionFile()
         {
             string str = VersionHelper.ConvertVersionFileToString(m_versionFileOnServer);
-            string versionFilePath = string.Format("{0}/{1}", DownloadConfig.s_downLoadPath, VersionConfig.s_versionFileName);
+            string versionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.s_versionFileName);
             File.WriteAllText(versionFilePath, str, System.Text.Encoding.UTF8);
         }
 
         public bool CheckFileIsInVersionFile(string path)
         {
-            if (m_versionFileOnClient != null && m_versionFileOnClient.files.ContainsKey(path)) {
+            if (m_versionFileOnClient != null && m_versionFileOnClient.FilesDic.ContainsKey(path)) {
                 return true;
             }
             return false;

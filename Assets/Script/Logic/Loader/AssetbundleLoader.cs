@@ -10,7 +10,7 @@ namespace Framework
         public static string ROOT_PATH = "";
 
         private const string MANIFEST_SUFFIX = ".manifest";
-        public static string Download_Path = DownloadConfig.s_downLoadPath;
+        public static string Download_Path = DownloadConfig.DownLoadPath;
         private static AssetBundleManifest s_manifest;
 
         private static Dictionary<string, AssetBundle> s_assetbundleDic = new Dictionary<string, AssetBundle>();

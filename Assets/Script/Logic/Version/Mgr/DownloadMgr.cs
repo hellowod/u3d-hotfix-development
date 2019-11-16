@@ -6,11 +6,11 @@ namespace Framework
 {
     public static class DownloadConfig
     {
-        public static string s_downLoadPath = "";
+        public static string DownLoadPath = "";
 
         static DownloadConfig()
         {
-            s_downLoadPath = Application.persistentDataPath;
+            DownLoadPath = Application.persistentDataPath;
         }
     }
 
