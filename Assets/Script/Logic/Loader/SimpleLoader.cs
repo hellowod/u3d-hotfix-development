@@ -47,7 +47,7 @@ namespace Framework
         public static string LoadText(string path)
         {
 #if UNITY_EDITOR && !LOAD_ASSETBUNDLE_INEDITOR
-            path = string.Format("{0}/{1}", RES_ROOT_PATH, path);
+            //path = string.Format("{0}/{1}", RES_ROOT_PATH, path);
 #else
 		if (VersionMgr.Instance.CheckFileIsInVersionFile(path)) {
 			path = string.Format("{0}/{1}", AssetbundleLoader.Download_Path, path) ;

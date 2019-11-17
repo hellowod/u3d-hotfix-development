@@ -5,19 +5,19 @@ using System.Text;
 
 namespace Framework
 {
-    public class VersionHelper
+    public class FileHelper
     {
         /// <summary>
         /// 解析版本信息
         /// </summary>
         /// <param name="txt"></param>
-        /// <param name="versionModel"></param>
-        public static void ParseVersion(string txt, ref VersionSvrModel versionModel)
+        /// <param name="versionData"></param>
+        public static void ParseVersion(string txt, ref VersionSvrModel versionData)
         {
             string[] content = txt.Split('\n');
             if (content != null) {
-                if (versionModel == null) {
-                    versionModel = new VersionSvrModel();
+                if (versionData == null) {
+                    versionData = new VersionSvrModel();
                 }
                 for (int i = 0; i < content.Length; i++) {
                     string line = content[i];
@@ -33,11 +33,12 @@ namespace Framework
                     }
                     string key = lineArr[0].Trim();
                     string val = lineArr[1].Trim();
-                    if (key.Equals("Version")) {
-                        versionModel.AppVersion = val.Substring(0, val.LastIndexOf('.'));
-                        versionModel.ResVersion = val.Substring(val.LastIndexOf('.') + 1);
+                    if (key.Equals("AppVersion")) {
+                        versionData.AppVersion = val;
+                    } else if (key.Equals("ResVersion")) {
+                        versionData.ResVersion = val;
                     } else if (key.Equals("ResUpdateURL")) {
-                        versionModel.DownloadBaseUrl = val;
+                        versionData.DownloadBaseUrl = val;
                     }
                 }
             }

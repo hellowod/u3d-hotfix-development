@@ -222,7 +222,7 @@ namespace Framework
                     if (files[i].Name.EndsWith(".meta") || files[i].Name.EndsWith(".manifest")) {
                         continue;
                     }
-                    string fileMD5 = VersionHelper.GetMd5Val(files[i].FullName);
+                    string fileMD5 = FileHelper.GetMd5Val(files[i].FullName);
                     string fileRelativePath = files[i].FullName.Substring(AssetsPath.Length + 1);
                     s_allFilesMd5NowVersion[fileRelativePath] = fileMD5;
                 } catch (Exception ex) {
@@ -280,7 +280,7 @@ namespace Framework
             if (File.Exists(s_verionFileName)) {
                 try {
                     string content = File.ReadAllText(s_verionFileName);
-                    VersionHelper.ParseVersionFile(content, ref s_versionFile);
+                    FileHelper.ParseVersionFile(content, ref s_versionFile);
                 } catch (Exception ex) {
                     throw new Exception("Load UpdateFile Error:" + ex.Message);
                 }
@@ -336,7 +336,7 @@ namespace Framework
 
         private static void WriteVersionFiles()
         {
-            string str = VersionHelper.ConvertVersionFileToString(s_versionFile);
+            string str = FileHelper.ConvertVersionFileToString(s_versionFile);
             File.WriteAllText(s_verionFileName, str);
         }
 

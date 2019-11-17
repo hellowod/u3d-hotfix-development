@@ -21,6 +21,7 @@ namespace Framework
         private void Awake()
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
 
         public void Download(string url, Action<WWW> downloadFinishedCallback, float delay = -1)

@@ -47,13 +47,13 @@ namespace Framework
             if (m_versionFlagIndex > 1) {
                 m_versionFlagIndex = 0;
                 if (m_serverResult.VersionType == VersionType.App) {
-                    Debug.LogError("新版本，需要下载");
+                    Debug.Log("新版本，需要下载");
                     return;
                 } else if (m_serverResult.VersionType == VersionType.Res) {
-                    Debug.LogError("新资源，需要下载");
+                    Debug.Log("新资源，需要下载");
                     DownloadVersionFile();
                 } else if (m_serverResult.VersionType == VersionType.None) {
-                    Debug.LogError("无更新，直接进入");
+                    Debug.Log("无更新，直接进入");
                     LevelLoader.LoadLevelAsync("CreatePlayer");
                 }
             }
@@ -77,8 +77,7 @@ namespace Framework
                 GetServerVersion();
                 return;
             }
-            VersionHelper.ParseVersion(www.text, ref m_serverResult);
-            Debug.LogFormat("GameServerVersion:{0}.{1}", m_serverResult.AppVersion, m_serverResult.ResVersion);
+            FileHelper.ParseVersion(www.text, ref m_serverResult);
             if (m_serverResult.AppVersion != m_appVersion) {
                 m_serverResult.VersionType = VersionType.App;
             } else if (m_serverResult.ResVersion != m_resVersion) {
@@ -86,8 +85,9 @@ namespace Framework
             } else {
                 m_serverResult.VersionType = VersionType.None;
             }
-            m_serverResult.DownloadBaseUrl = GetDownloadUrlWithPlatform(m_serverResult.DownloadBaseUrl);
+            m_serverResult.DownloadBaseUrl = PathHelper.GetDownloadUrlWithPlatform(m_serverResult.DownloadBaseUrl, m_appVersion);
             m_versionFlagIndex++;
+            Debug.LogFormat("Server Version: {0}.{1}", m_serverResult.AppVersion, m_serverResult.ResVersion);
         }
 
         /// <summary>
@@ -106,29 +106,11 @@ namespace Framework
             if (string.IsNullOrEmpty(content)) {
                 m_resVersion = VersionConfig.s_resVersion;
             } else {
-                VersionHelper.ParseVersionFile(content, ref m_versionFileOnClient);
+                FileHelper.ParseVersionFile(content, ref m_versionFileOnClient);
                 m_resVersion = m_versionFileOnClient.ResVersion;
             }
             m_versionFlagIndex++;
-            Debug.LogFormat("GameClientVersion:{0}.{1}", m_appVersion, m_resVersion);
-        }
-
-        /// <summary>
-        /// 获取下载地址
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        private string GetDownloadUrlWithPlatform(string url)
-        {
-#if UNITY_IOS
-            return string.Format("{0}/{1}/{2}", url, "iOS", m_appVersion);
-#elif UNITY_ANDROID
-		    return string.Format("{0}/{1}/{2}", url, "Android", m_appVersion);
-#elif UNITY_STANDALONE_OSX
-            return string.Format("{0}/{1}/{2}", url, "OSX", m_appVersion);
-#elif UNITY_STANDALONE_WIN
-            return string.Format("{0}/{1}/{2}", url, "Win", m_appVersion);
-#endif
+            Debug.LogFormat("Client Version: {0}.{1}", m_appVersion, m_resVersion);
         }
 
         /// <summary>
@@ -157,7 +139,7 @@ namespace Framework
             }
             string content = www.text;
             m_downloadIndex = 0;
-            VersionHelper.ParseVersionFile(content, ref m_versionFileOnServer);
+            FileHelper.ParseVersionFile(content, ref m_versionFileOnServer);
             GenerateUpdateFilesList();
             DownloadUpdateFiles(m_downloadIndex);
         }
@@ -187,7 +169,7 @@ namespace Framework
             foreach (KeyValuePair<string, VersionFileInfo> kvp in allFileDic) {
                 string filesDownloadPath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, kvp.Key);
                 if (File.Exists(filesDownloadPath)) {
-                    string md5 = VersionHelper.GetMd5Val(filesDownloadPath);
+                    string md5 = FileHelper.GetMd5Val(filesDownloadPath);
                     if (!string.Equals(md5, kvp.Value.md5)) {
                         m_needUpdateFileList.Add(kvp.Key);
                     }
@@ -266,7 +248,7 @@ namespace Framework
         /// </summary>
         private void WriteVersionFile()
         {
-            string str = VersionHelper.ConvertVersionFileToString(m_versionFileOnServer);
+            string str = FileHelper.ConvertVersionFileToString(m_versionFileOnServer);
             string versionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.s_versionFileName);
             File.WriteAllText(versionFilePath, str, System.Text.Encoding.UTF8);
         }

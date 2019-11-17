@@ -1,9 +1,11 @@
-;Game Version
-Version = 1.0.1
-;Game Application Dowload URL
-AppAndroidURL = http://10.12.21.75/index.html
-AppiOSURL = http://10.12.21.75/index.html
-AppWinURL = http://10.12.21.75/index.html
-AppOSXURL = http://10.12.21.75/index.html
-;Resource Download URL
-ResUpdateURL = http://10.12.21.75/Patch
+;主版本号
+AppVersion=1.0
+;资源版本号
+ResVersion=1
+;应用更新地址
+AppAndroidURL=http://10.12.21.75/index.html
+AppiOSURL=http://10.12.21.75/index.html
+AppWinURL=http://10.12.21.75/index.html
+AppOSXURL=http://10.12.21.75/index.html
+;资源更新地址
+ResUpdateURL=http://10.12.21.75/Patch
