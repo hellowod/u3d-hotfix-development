@@ -5568,6 +5568,10 @@ ul.inline li:last-child {
 	font-weight: 500
 }
 
+.cellbackground {
+	background-color: #FAEBD799;
+}
+
 .footer {
 	font-size: 14px;
 	font-size: .875rem;
