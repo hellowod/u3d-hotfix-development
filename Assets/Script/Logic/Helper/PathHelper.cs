@@ -1,13 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Framework
+﻿namespace Framework
 {
     public class PathHelper
     {
+        /// <summary>
+        /// 获取版本文件路径
+        /// </summary>
+        /// <returns></returns>
+        public static string GetPlatformName()
+        {
+            string platformName = string.Empty;
+#if UNITY_IOS
+            platformName = "iOS/";
+#elif UNITY_ANDROID
+            platformName = "Android/";
+#elif UNITY_STANDALONE_WIN
+            platformName = "Win/";
+#elif UNITY_STANDALONE_OSX
+            platformName = "OSX/";
+#endif
+            return platformName;
+        }
+
         /// <summary>
         /// 获取下载地址
         /// </summary>
@@ -15,15 +28,7 @@ namespace Framework
         /// <returns></returns>
         public static string GetDownloadUrlWithPlatform(string url, string appVersion)
         {
-#if UNITY_IOS
-            return string.Format("{0}/{1}/{2}", url, "iOS", appVersion);
-#elif UNITY_ANDROID
-            return string.Format("{0}/{1}/{2}", url, "Android", appVersion);
-#elif UNITY_STANDALONE_OSX
-            return string.Format("{0}/{1}/{2}", url, "OSX", appVersion);
-#elif UNITY_STANDALONE_WIN
-            return string.Format("{0}/{1}/{2}", url, "Win", appVersion);
-#endif
+            return string.Format("{0}/{1}/{2}", url, GetPlatformName(), appVersion);
         }
     }
 }

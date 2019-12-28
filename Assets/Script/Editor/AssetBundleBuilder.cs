@@ -24,7 +24,7 @@ namespace Framework
             "Art/Prefab",
         };
 
-        public static string AssetBundle_Path = Application.streamingAssetsPath;
+        public static string s_assetBundlePath = Application.streamingAssetsPath;
 
         private static List<AssetNode> s_leafAssetNodes = new List<AssetNode>();
         private static Dictionary<string, AssetNode> s_allAssetNodes = new Dictionary<string, AssetNode>();
@@ -33,7 +33,7 @@ namespace Framework
         [MenuItem("Tool/Builder/BuildScene")]
         private static void BuildScenesAssetBundles()
         {
-            string outPath = AssetBundle_Path + "/Scenes/";
+            string outPath = s_assetBundlePath + "/Scenes/";
             if (Directory.Exists(outPath)) {
             } else {
                 DirectoryInfo newDirect = Directory.CreateDirectory(outPath);
@@ -92,7 +92,6 @@ namespace Framework
                         // 文件可能在上一个文件的依赖关系中被处理了
                         if (!s_allAssetNodes.TryGetValue(fileRelativePath, out root)) {
                             root = new AssetNode();
-                            Debug.LogError(fileRelativePath);
                             root.path = fileRelativePath;
                             s_allAssetNodes[root.path] = root;
                             GetDependcyRecursive(fileRelativePath, root);
@@ -117,22 +116,18 @@ namespace Framework
                     node = new AssetNode();
                     node.path = dependcy[i];
                     node.depth = parentNode.depth + 1;
-                    Debug.LogErrorFormat("dependcy={0}, depth={1}", dependcy[i], node.depth);
                     node.parents.Add(parentNode);
                     s_allAssetNodes[node.path] = node;
                     GetDependcyRecursive(dependcy[i], node);
                 } else {
                     if (!node.parents.Contains(parentNode)) {
-                        Debug.LogError("aaaa="+ node.path);
                         node.parents.Add(parentNode);
                     }
                     if (node.depth < parentNode.depth + 1) {
-                        Debug.LogError("bbbb=" + node.path);
                         node.depth = parentNode.depth + 1;
                         GetDependcyRecursive(dependcy[i], node);
                     }
                 }
-                //Debug.Log("dependcy path is " +dependcy[i] + " parent is " + parentNode.path);
             }
             if (dependcy.Length == 0) {
                 if (!s_leafAssetNodes.Contains(parentNode)) {
@@ -202,10 +197,10 @@ namespace Framework
                 buildMapArray[i].assetNames = new string[] { s_buildMap[i] };
                 Debug.Log(s_buildMap[i]);
             }
-            if (!Directory.Exists(AssetBundle_Path)) {
-                Directory.CreateDirectory(AssetBundle_Path);
+            if (!Directory.Exists(s_assetBundlePath)) {
+                Directory.CreateDirectory(s_assetBundlePath);
             }
-            BuildPipeline.BuildAssetBundles(AssetBundle_Path, buildMapArray, BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.DeterministicAssetBundle, EditorUserBuildSettings.activeBuildTarget);
+            BuildPipeline.BuildAssetBundles(s_assetBundlePath, buildMapArray, BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.DeterministicAssetBundle, EditorUserBuildSettings.activeBuildTarget);
         }
 
         /// <summary>
