@@ -1,4 +1,6 @@
-﻿namespace Framework
+﻿using UnityEditor;
+
+namespace Framework
 {
     public class PathHelper
     {

@@ -1,8 +1,0 @@
-art\Config\Test 7.txt,3f0df51e0d2bcc658d10e98c692b4b60,1
-StreamingAssets,5ad7a77b37046db65835a273929cd29e,3
-art\prefab\barrel_03.prefab,63e4487030b0cfbaeaae20208ea1434e,2
-art\model\book_01.fbx,e26a649173f26dc908dc0c416751d67d,3
-art\model\materials\book_01.mat,0c0aab89a7479b7a58c40979694bd8d0,3
-art\prefab\book_01.prefab,a85da2f43ae8ebeead47f5b86931e295,3
-art\prefab\book_02.prefab,500335626cf5790f1ca890cc5102b39b,3
-3

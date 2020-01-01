@@ -5,12 +5,13 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using UnityEditor.Build.Reporting;
 
 namespace Framework
 {
     public class AssetVersionBuilder : Editor
     {
-        public static string AssetsPath = Application.streamingAssetsPath;
+        public static string s_assetsPath = Application.streamingAssetsPath;
 
         private static string s_versionFilesPath = Application.dataPath + "/VersionFiles/";
         private static string s_versionMD5FileName = "VersionMD5File.txt";
@@ -36,6 +37,7 @@ namespace Framework
             CleanBuildAllBundle();
             BuildText();
             CleanAndWriteNewVersion();
+            ExportProject();
         }
 
         [MenuItem("Tool/Version/FastBuildApp")]
@@ -44,6 +46,7 @@ namespace Framework
             BuildAllBundle();
             BuildText();
             CleanAndWriteNewVersion();
+            ExportProject();
         }
 
         /// <summary>
@@ -59,6 +62,27 @@ namespace Framework
             AssetDatabase.Refresh();
         }
 
+        /// <summary>
+        /// 导出目标工程
+        /// </summary>
+        private static void ExportProject()
+        {
+            BuildPlayerOptions options = new BuildPlayerOptions();
+            options.target = EditorUtils.GetBuildTarget();
+            string exportPath = EditorUtils.GetExportProjectPath();
+            string folderPath = Path.GetDirectoryName(exportPath);
+            if (Directory.Exists(folderPath)) {
+                FileUtil.DeleteFileOrDirectory(folderPath);
+            }
+            options.locationPathName = exportPath;
+            options.options = BuildOptions.AcceptExternalModificationsToPlayer;
+            BuildReport report = BuildPipeline.BuildPlayer(options);
+            if (report.summary.result == BuildResult.Succeeded) {
+                Debug.LogFormat("Export project path={0} success!", exportPath);
+            } else {
+                Debug.LogFormat("Export project path={0} Failure!", exportPath);
+            }
+        }
 
         [MenuItem("Tool/Version/CleanBuildPatch")]
         private static void BuildAssetbundle()
@@ -203,11 +227,11 @@ namespace Framework
         private static bool GenerateAllFilesMD5()
         {
             s_allFilesMd5NowVersion.Clear();
-            if (!Directory.Exists(AssetsPath)) {
-                Debug.LogError(string.Format("AssetsPath path {0} not exist", AssetsPath));
+            if (!Directory.Exists(s_assetsPath)) {
+                Debug.LogError(string.Format("AssetsPath path {0} not exist", s_assetsPath));
                 return false;
             }
-            DirectoryInfo dir = new DirectoryInfo(AssetsPath);
+            DirectoryInfo dir = new DirectoryInfo(s_assetsPath);
             FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
             for (var i = 0; i < files.Length; ++i) {
                 try {
@@ -215,7 +239,7 @@ namespace Framework
                         continue;
                     }
                     string fileMD5 = FileHelper.GetMd5Val(files[i].FullName);
-                    string fileRelativePath = files[i].FullName.Substring(AssetsPath.Length + 1);
+                    string fileRelativePath = files[i].FullName.Substring(s_assetsPath.Length + 1);
                     s_allFilesMd5NowVersion[fileRelativePath] = fileMD5;
                 } catch (Exception ex) {
                     throw new Exception("GetMD5HashFromFile fail,error:" + ex.Message);
@@ -301,7 +325,7 @@ namespace Framework
                 s_exportPath = string.Format("{0}/{1}/{2}", s_exportPath, VersionConfig.s_appVersion, GetNewResVersion());
                 for (int i = 0; i < updatedFiles.Count; i++) {
                     string assetbundleDestPath = s_exportPath + "/" + updatedFiles[i];
-                    string assetbundleSrcPath = AssetsPath + "/" + updatedFiles[i];
+                    string assetbundleSrcPath = s_assetsPath + "/" + updatedFiles[i];
                     string destDir = Path.GetDirectoryName(assetbundleDestPath);
                     if (!Directory.Exists(destDir)) {
                         Directory.CreateDirectory(destDir);
@@ -329,8 +353,8 @@ namespace Framework
         /// </summary>
         private static void CleanBuildAllBundle()
         {
-            if (Directory.Exists(AssetsPath)) {
-                Directory.Delete(AssetsPath, true);
+            if (Directory.Exists(s_assetsPath)) {
+                Directory.Delete(s_assetsPath, true);
             }
             BuildAllBundle();
         }
