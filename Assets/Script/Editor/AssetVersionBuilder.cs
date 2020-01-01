@@ -13,7 +13,8 @@ namespace Framework
     {
         public static string s_assetsPath = Application.streamingAssetsPath;
 
-        private static string s_versionFilesPath = Application.dataPath + "/VersionFiles/";
+        private static string s_versionFilesPath = EditorUtils.GetVersionFilePath();
+
         private static string s_versionMD5FileName = "VersionMD5File.txt";
         private static string s_verionFileName = "";
 
@@ -146,7 +147,7 @@ namespace Framework
                 return;
             }
             // set update files version
-            string newVersion = GetNewResVersion();
+            string newVersion = VersionConfig.s_resVersion;
             s_versionFile.ResVersion = newVersion;
             for (int i = 0; i < needUpdateFileList.Count; i++) {
                 s_versionFile.FilesDic[needUpdateFileList[i]] = new VersionFileInfo(s_allFilesMd5NowVersion[needUpdateFileList[i]], newVersion);
@@ -305,24 +306,13 @@ namespace Framework
         }
 
         /// <summary>
-        /// 获取新的资源版本
-        /// </summary>
-        /// <returns></returns>
-        private static string GetNewResVersion()
-        {
-            return VersionConfig.s_resVersion;
-        }
-
-        /// <summary>
         /// 导出资源
         /// </summary>
         /// <param name="updatedFiles"></param>
         private static void ExportUpdateFiles(List<string> updatedFiles)
         {
             if (updatedFiles.Count > 0) {
-                s_exportPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("/") + 1) + "Bin/Patch/";
-                s_exportPath += PathHelper.GetPlatformName();
-                s_exportPath = string.Format("{0}/{1}/{2}", s_exportPath, VersionConfig.s_appVersion, GetNewResVersion());
+                s_exportPath = EditorUtils.GetExportPatchPath(VersionConfig.s_appVersion, VersionConfig.s_resVersion);
                 for (int i = 0; i < updatedFiles.Count; i++) {
                     string assetbundleDestPath = s_exportPath + "/" + updatedFiles[i];
                     string assetbundleSrcPath = s_assetsPath + "/" + updatedFiles[i];
