@@ -1,4 +1,4 @@
-StreamingAssets,7978609ef1b433b1da6c2fd96024882b
+StreamingAssets,d62b197d4b3d1ac16a1b288f5b77c927
 art\Config\Test 1.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test 2.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test 3.txt,3f0df51e0d2bcc658d10e98c692b4b60
@@ -7,12 +7,13 @@ art\Config\Test 5.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test 6.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test 7.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test.txt,3f0df51e0d2bcc658d10e98c692b4b60
-art\model\barrel_01.fbx,bd1e7b2766cdd092229c484590a614aa
-art\model\book_01.fbx,82a139bffcc36c52a90a0a550d62c7a6
-art\model\materials\barrel_01.mat,195d4b1fe97428111859bd82cb4c29bc
-art\model\materials\book_01.mat,59a4e04091348b104b4f55a010ffa25a
-art\prefab\barrel_01.prefab,3e57e387ee31eea9b35390d7d30ecfbf
-art\prefab\barrel_02.prefab,d402f3feed6a5a3dc9dba7747e793c01
-art\prefab\barrel_03.prefab,4a65ba102be902fc43f93b909978418d
-art\prefab\book_01.prefab,0010a6aca5df0ac87e21ae957eeb280c
-art\prefab\book_02.prefab,41cbdc7696581a0d99d1fc606994b73c
+art\maincity\o_city_bby_01_alpha.png,100a4e6c5dbdd8e9b1775d9984324b33
+art\maincity\o_city_bby_01_crop.png,66b4f74738cc473fd78968006a17d47e
+art\model\book_01.fbx,4d2a5d8a1a857771eaa687f3673b66ae
+art\model\materials\book_01.mat,ec5a9c74c93fe86319575822ab84d9fa
+art\prefab\barrel_01.prefab,a4f8bc91060f1908ae4a34e7ae3dbe8e
+art\prefab\book_01.prefab,f2eaecd0304dfd5105e16e8b8f124324
+art\prefab\book_02.prefab,e44cfecfa5e4177e3026074059e25791
+art\prefab\maincity_01.prefab,caf11e7a3547b315925f4c425de453cb
+art\prefab\maincity_02.prefab,af089ba2f0ab4fecdd8e3c018083376c
+art\shader\cz_night2d_building.shader,c4073d9f866e88a21d9c75bee250a533
