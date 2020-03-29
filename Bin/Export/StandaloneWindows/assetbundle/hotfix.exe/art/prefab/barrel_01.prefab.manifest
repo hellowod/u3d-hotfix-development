@@ -1,0 +1,32 @@
+ManifestFileVersion: 0
+CRC: 1834474234
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d1631199498936f66c9a545ab42ad29b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ea3f786f3814b1ad9ef2ef747825eec5
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+Assets:
+- Assets/Art/Prefab/Barrel_01.prefab
+Dependencies:
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/hotfix.exe/art/model/barrel_01.fbx
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/hotfix.exe/art/model/materials/barrel_01.mat

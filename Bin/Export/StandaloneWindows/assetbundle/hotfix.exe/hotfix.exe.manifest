@@ -1,0 +1,76 @@
+ManifestFileVersion: 0
+CRC: 2033293497
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: art/maincity/o_city_bby_alpha.png
+      Dependencies: {}
+    Info_1:
+      Name: art/shader/cz_night2d_building.shader
+      Dependencies: {}
+    Info_2:
+      Name: art/model/barrel_01.fbx
+      Dependencies: {}
+    Info_3:
+      Name: art/model/book_01.fbx
+      Dependencies: {}
+    Info_4:
+      Name: art/maincity/o_city_bby_crop.png
+      Dependencies: {}
+    Info_5:
+      Name: art/model/materials/barrel_01.mat
+      Dependencies: {}
+    Info_6:
+      Name: art/model/materials/book_01.mat
+      Dependencies: {}
+    Info_7:
+      Name: art/model/materials/maincity_02.mat
+      Dependencies:
+        Dependency_0: art/maincity/o_city_bby_alpha.png
+        Dependency_1: art/shader/cz_night2d_building.shader
+    Info_8:
+      Name: art/prefab/barrel_01.prefab
+      Dependencies:
+        Dependency_0: art/model/barrel_01.fbx
+        Dependency_1: art/model/materials/barrel_01.mat
+    Info_9:
+      Name: art/prefab/barrel_02.prefab
+      Dependencies:
+        Dependency_0: art/model/barrel_01.fbx
+        Dependency_1: art/model/materials/barrel_01.mat
+    Info_10:
+      Name: art/prefab/book_01.prefab
+      Dependencies:
+        Dependency_0: art/model/book_01.fbx
+        Dependency_1: art/model/materials/book_01.mat
+    Info_11:
+      Name: art/prefab/book_02.prefab
+      Dependencies:
+        Dependency_0: art/model/book_01.fbx
+        Dependency_1: art/model/materials/book_01.mat
+    Info_12:
+      Name: art/prefab/book_03.prefab
+      Dependencies:
+        Dependency_0: art/model/book_01.fbx
+        Dependency_1: art/model/materials/book_01.mat
+    Info_13:
+      Name: art/prefab/book_04.prefab
+      Dependencies:
+        Dependency_0: art/model/book_01.fbx
+        Dependency_1: art/model/materials/book_01.mat
+    Info_14:
+      Name: art/prefab/maincity_01.prefab
+      Dependencies:
+        Dependency_0: art/maincity/o_city_bby_alpha.png
+        Dependency_1: art/shader/cz_night2d_building.shader
+        Dependency_2: art/maincity/o_city_bby_crop.png
+    Info_15:
+      Name: art/prefab/maincity_02.prefab
+      Dependencies:
+        Dependency_0: art/maincity/o_city_bby_crop.png
+        Dependency_1: art/model/materials/maincity_02.mat
+    Info_16:
+      Name: art/prefab/maincity_03.prefab
+      Dependencies:
+        Dependency_0: art/maincity/o_city_bby_crop.png
+        Dependency_1: art/model/materials/maincity_02.mat

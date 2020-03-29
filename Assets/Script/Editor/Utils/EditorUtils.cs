@@ -32,25 +32,16 @@ public class EditorUtils
     /// 获取导出项目路径
     /// </summary>
     /// <returns></returns>
-    public static string GetExportProjectPath()
+    public static string GetExportProjectPath(string type)
     {
         BuildTarget target = GetBuildTarget();
         if (target == BuildTarget.StandaloneWindows || target == BuildTarget.StandaloneWindows64) {
-            return string.Format("Bin/Export/{0}/{1}.exe", target.ToString(), target.ToString());
+            return string.Format("Bin/export/{0}/{1}/{2}.exe", target.ToString(), type, PlayerSettings.productName);
         } else if (target == BuildTarget.StandaloneOSX) {
-            return string.Format("Bin/Export/{0}/{1}.app", target.ToString(), target.ToString());
+            return string.Format("Bin/export/{0}/{1}/{2}.app", target.ToString(), type, PlayerSettings.productName);
         } else {
-            return string.Format("Bin/Export/{0}/", target.ToString());
+            return string.Format("Bin/export/{0}/{1}/{2}/", target.ToString(), type, PlayerSettings.productName);
         }
-    }
-
-    /// <summary>
-    /// 获取版本文件路径
-    /// </summary>
-    /// <returns></returns>
-    public static string GetVersionFilePath()
-    {
-        return string.Format("{0}/VersionFiles/", Application.dataPath);
     }
 
     /// <summary>
@@ -59,10 +50,11 @@ public class EditorUtils
     /// <returns></returns>
     public static string GetExportPatchPath(string appVersion, string resVersion)
     {
-        return string.Format("{0}/{1}/{2}/{3}/{4}", 
+        return string.Format("{0}/{1}/{2}/{3}/{4}/{5}", 
             Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("/")), 
-            "Bin/Patch", 
+            "Bin/export", 
             PathHelper.GetPlatformName().Replace("/", ""),
+            "patch",
             appVersion,
             resVersion);
     }

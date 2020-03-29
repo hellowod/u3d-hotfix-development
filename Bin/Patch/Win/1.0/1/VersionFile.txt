@@ -1,3 +1,0 @@
-StreamingAssets,3eacbef6c70138ebc0510ea6947dcbbb,1
-art\prefab\book_03.prefab,3d77c1c20f5daee04c291a61d2690925,1
-1

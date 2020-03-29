@@ -11,9 +11,9 @@ namespace Framework
 {
     public class AssetVersionBuilder : Editor
     {
-        public static string s_assetsPath = Application.streamingAssetsPath;
+        public static string s_assetsPath = EditorUtils.GetExportProjectPath("assetbundle");
 
-        private static string s_versionFilesPath = EditorUtils.GetVersionFilePath();
+        private static string s_versionFilesPath = EditorUtils.GetExportProjectPath("versionfile");
 
         private static string s_versionMD5FileName = "VersionMD5File.txt";
         private static string s_verionFileName = "";
@@ -70,7 +70,7 @@ namespace Framework
         {
             BuildPlayerOptions options = new BuildPlayerOptions();
             options.target = EditorUtils.GetBuildTarget();
-            string exportPath = EditorUtils.GetExportProjectPath();
+            string exportPath = EditorUtils.GetExportProjectPath("application");
             string folderPath = Path.GetDirectoryName(exportPath);
             if (Directory.Exists(folderPath)) {
                 FileUtil.DeleteFileOrDirectory(folderPath);
