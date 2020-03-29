@@ -24,7 +24,7 @@ namespace Framework
             "Art/Prefab",
         };
 
-        public static string s_assetBundlePath = EditorUtils.GetExportProjectPath("assetbundle");
+        public static string s_assetBundlePath = EditorUtils.GetExportBundlePath();
 
         private static List<AssetNode> s_leafAssetNodes = new List<AssetNode>();
         private static Dictionary<string, AssetNode> s_allAssetNodes = new Dictionary<string, AssetNode>();

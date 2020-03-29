@@ -1,3 +1,0 @@
-rt\StandaloneWindows\assetbundle\hotfix.exe\hotfix.exe,7d5e62a11a518700f949e4b2716335e5,1
-rt\StandaloneWindows\assetbundle\hotfix.exe\art\prefab\book_04.prefab,7e01d5c14179c39e3f55b24f7a6b1e01,1
-1

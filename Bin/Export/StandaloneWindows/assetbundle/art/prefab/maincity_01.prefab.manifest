@@ -26,6 +26,6 @@ ClassTypes:
 Assets:
 - Assets/Art/Prefab/MainCity_01.prefab
 Dependencies:
-- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/hotfix.exe/art/maincity/o_city_bby_alpha.png
-- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/hotfix.exe/art/shader/cz_night2d_building.shader
-- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/hotfix.exe/art/maincity/o_city_bby_crop.png
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/maincity/o_city_bby_alpha.png
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/shader/cz_night2d_building.shader
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/maincity/o_city_bby_crop.png

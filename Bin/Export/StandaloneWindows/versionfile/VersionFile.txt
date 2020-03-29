@@ -1,0 +1,3 @@
+t\Bin\export\StandaloneWindows\assetbundle\assetbundle,c18eed888838b52c8dc982f71e356932,1
+t\Bin\export\StandaloneWindows\assetbundle\art\prefab\book_04.prefab,7e2e3bee4942787b4b6b78655cc61901,1
+1

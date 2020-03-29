@@ -45,17 +45,32 @@ public class EditorUtils
     }
 
     /// <summary>
+    /// 获取导出项目路径
+    /// </summary>
+    /// <returns></returns>
+    public static string GetExportBundlePath()
+    {
+        BuildTarget target = GetBuildTarget();
+        return string.Format("Bin/export/{0}/assetbundle/", target.ToString());
+    }
+
+    /// <summary>
+    /// 获取导出项目路径
+    /// </summary>
+    /// <returns></returns>
+    public static string GetExportVersionPath()
+    {
+        BuildTarget target = GetBuildTarget();
+        return string.Format("Bin/export/{0}/versionfile/", target.ToString());
+    }
+
+    /// <summary>
     /// 获取导出补丁的路径
     /// </summary>
     /// <returns></returns>
     public static string GetExportPatchPath(string appVersion, string resVersion)
     {
-        return string.Format("{0}/{1}/{2}/{3}/{4}/{5}", 
-            Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("/")), 
-            "Bin/export", 
-            PathHelper.GetPlatformName().Replace("/", ""),
-            "patch",
-            appVersion,
-            resVersion);
+        BuildTarget target = GetBuildTarget();
+        return string.Format("Bin/export/{0}/patch/{1}/{2}", target.ToString(), appVersion, resVersion);
     }
 }

@@ -11,9 +11,9 @@ namespace Framework
 {
     public class AssetVersionBuilder : Editor
     {
-        public static string s_assetsPath = EditorUtils.GetExportProjectPath("assetbundle");
+        public static string s_assetsPath = EditorUtils.GetExportBundlePath();
 
-        private static string s_versionFilesPath = EditorUtils.GetExportProjectPath("versionfile");
+        private static string s_versionFilesPath = EditorUtils.GetExportVersionPath();
 
         private static string s_versionMD5FileName = "VersionMD5File.txt";
         private static string s_verionFileName = "";
@@ -27,7 +27,6 @@ namespace Framework
 
         static AssetVersionBuilder()
         {
-            s_versionFilesPath += PathHelper.GetPlatformName();
             s_versionMD5FileName = s_versionFilesPath + s_versionMD5FileName;
             s_verionFileName = s_versionFilesPath + VersionConfig.s_versionFileName;
         }
@@ -314,8 +313,8 @@ namespace Framework
             if (updatedFiles.Count > 0) {
                 s_exportPath = EditorUtils.GetExportPatchPath(VersionConfig.s_appVersion, VersionConfig.s_resVersion);
                 for (int i = 0; i < updatedFiles.Count; i++) {
-                    string assetbundleDestPath = s_exportPath + "/" + updatedFiles[i];
-                    string assetbundleSrcPath = s_assetsPath + "/" + updatedFiles[i];
+                    string assetbundleDestPath = updatedFiles[i];
+                    string assetbundleSrcPath = updatedFiles[i];
                     string destDir = Path.GetDirectoryName(assetbundleDestPath);
                     if (!Directory.Exists(destDir)) {
                         Directory.CreateDirectory(destDir);

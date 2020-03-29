@@ -1,0 +1,16 @@
+t\Bin\export\StandaloneWindows\assetbundle\assetbundle,c18eed888838b52c8dc982f71e356932
+t\Bin\export\StandaloneWindows\assetbundle\art\maincity\o_city_bby_alpha.png,c4614cfdbe53d57813da531021c11c14
+t\Bin\export\StandaloneWindows\assetbundle\art\maincity\o_city_bby_crop.png,aeeb78e7653642e7284591eae45ba4bd
+t\Bin\export\StandaloneWindows\assetbundle\art\model\barrel_01.fbx,3a9a987dd7dbc3c0fdbf380e24e8d71b
+t\Bin\export\StandaloneWindows\assetbundle\art\model\book_01.fbx,023acca12c62ec0b1567b4c20903d994
+t\Bin\export\StandaloneWindows\assetbundle\art\model\materials\barrel_01.mat,5e91861139d0c5e27a0caeb22b9e4293
+t\Bin\export\StandaloneWindows\assetbundle\art\model\materials\book_01.mat,2a15fdc85dd5cdfd715818a9f63c15ad
+t\Bin\export\StandaloneWindows\assetbundle\art\prefab\barrel_01.prefab,514fb0cdb143f4320c5388592122050d
+t\Bin\export\StandaloneWindows\assetbundle\art\prefab\barrel_02.prefab,f0b89a4bba75a9efc425fc86260cf011
+t\Bin\export\StandaloneWindows\assetbundle\art\prefab\book_01.prefab,f51d3cac647f4d984661189ee92a7084
+t\Bin\export\StandaloneWindows\assetbundle\art\prefab\book_02.prefab,da490b07098caaa6e3f8453f3fde5676
+t\Bin\export\StandaloneWindows\assetbundle\art\prefab\book_03.prefab,02fbbd56cf23e9e397a260c7f13a07c8
+t\Bin\export\StandaloneWindows\assetbundle\art\prefab\book_04.prefab,7e2e3bee4942787b4b6b78655cc61901
+t\Bin\export\StandaloneWindows\assetbundle\art\prefab\maincity_01.prefab,a4811b1aaf358663e957c8f1aed048c7
+t\Bin\export\StandaloneWindows\assetbundle\art\prefab\maincity_02.prefab,73d420f19dba0a57722b3f0c66008c1d
+t\Bin\export\StandaloneWindows\assetbundle\art\shader\cz_night2d_building.shader,23ebbef422b667784b8e9559e4b4fd1a

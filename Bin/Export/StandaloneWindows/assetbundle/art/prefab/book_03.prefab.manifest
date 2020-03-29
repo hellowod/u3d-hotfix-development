@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2380174501
+CRC: 2147642884
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3f8e4cf3fd0c6f61abb455349061cb42
+    Hash: 6061062cd2a0c1e2b604109ff6cd2a76
   TypeTreeHash:
     serializedVersion: 2
     Hash: ce00b96eb05100871f39954dc67941ec
@@ -22,7 +22,7 @@ ClassTypes:
 - Class: 43
   Script: {instanceID: 0}
 Assets:
-- Assets/Art/Prefab/Book_02.prefab
+- Assets/Art/Prefab/Book_03.prefab
 Dependencies:
-- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/hotfix.exe/art/model/book_01.fbx
-- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/hotfix.exe/art/model/materials/book_01.mat
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/model/book_01.fbx
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/model/materials/book_01.mat

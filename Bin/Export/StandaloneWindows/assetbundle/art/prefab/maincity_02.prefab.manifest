@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 2177912775
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4c71c3ba415d4a3325d149daf672b1a2
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 52b90fe34acdbe892c80e1ff630fee3e
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Art/Prefab/MainCity_02.prefab
+Dependencies:
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/maincity/o_city_bby_alpha.png
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/shader/cz_night2d_building.shader
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/maincity/o_city_bby_crop.png

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1834474234
+CRC: 86773343
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d1631199498936f66c9a545ab42ad29b
+    Hash: 428a8ec4cda013a0700a11ae7ad35c72
   TypeTreeHash:
     serializedVersion: 2
     Hash: ea3f786f3814b1ad9ef2ef747825eec5
@@ -26,7 +26,7 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Art/Prefab/Barrel_01.prefab
+- Assets/Art/Prefab/Barrel_02.prefab
 Dependencies:
-- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/hotfix.exe/art/model/barrel_01.fbx
-- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/hotfix.exe/art/model/materials/barrel_01.mat
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/model/barrel_01.fbx
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/StandaloneWindows/assetbundle/art/model/materials/barrel_01.mat
