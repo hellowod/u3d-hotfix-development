@@ -1,4 +1,0 @@
-art\Config\Test 7.txt,3f0df51e0d2bcc658d10e98c692b4b60,1
-StreamingAssets,1b71b703846a4036b022f30d71c3a504,2
-art\prefab\barrel_03.prefab,63e4487030b0cfbaeaae20208ea1434e,2
-2
