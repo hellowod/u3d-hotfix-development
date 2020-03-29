@@ -1,4 +1,4 @@
-StreamingAssets,d62b197d4b3d1ac16a1b288f5b77c927
+StreamingAssets,b76ee2b9a8440196d9f03d8bb4dd0039
 art\Config\Test 1.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test 2.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test 3.txt,3f0df51e0d2bcc658d10e98c692b4b60
@@ -7,13 +7,19 @@ art\Config\Test 5.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test 6.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test 7.txt,3f0df51e0d2bcc658d10e98c692b4b60
 art\Config\Test.txt,3f0df51e0d2bcc658d10e98c692b4b60
-art\maincity\o_city_bby_01_alpha.png,100a4e6c5dbdd8e9b1775d9984324b33
-art\maincity\o_city_bby_01_crop.png,66b4f74738cc473fd78968006a17d47e
-art\model\book_01.fbx,4d2a5d8a1a857771eaa687f3673b66ae
-art\model\materials\book_01.mat,ec5a9c74c93fe86319575822ab84d9fa
-art\prefab\barrel_01.prefab,a4f8bc91060f1908ae4a34e7ae3dbe8e
-art\prefab\book_01.prefab,f2eaecd0304dfd5105e16e8b8f124324
-art\prefab\book_02.prefab,e44cfecfa5e4177e3026074059e25791
-art\prefab\maincity_01.prefab,caf11e7a3547b315925f4c425de453cb
-art\prefab\maincity_02.prefab,af089ba2f0ab4fecdd8e3c018083376c
-art\shader\cz_night2d_building.shader,c4073d9f866e88a21d9c75bee250a533
+art\maincity\o_city_bby_alpha.png,c4614cfdbe53d57813da531021c11c14
+art\maincity\o_city_bby_crop.png,1d2fed6e7800a8f55ab3274097c0605a
+art\model\barrel_01.fbx,3a9a987dd7dbc3c0fdbf380e24e8d71b
+art\model\book_01.fbx,023acca12c62ec0b1567b4c20903d994
+art\model\materials\barrel_01.mat,5e91861139d0c5e27a0caeb22b9e4293
+art\model\materials\book_01.mat,2a15fdc85dd5cdfd715818a9f63c15ad
+art\model\materials\maincity_02.mat,b4fbc0f886829bd34291b5faf096b0f8
+art\prefab\barrel_01.prefab,514fb0cdb143f4320c5388592122050d
+art\prefab\barrel_02.prefab,f0b89a4bba75a9efc425fc86260cf011
+art\prefab\book_01.prefab,f51d3cac647f4d984661189ee92a7084
+art\prefab\book_02.prefab,da490b07098caaa6e3f8453f3fde5676
+art\prefab\book_03.prefab,3d77c1c20f5daee04c291a61d2690925
+art\prefab\maincity_01.prefab,a4811b1aaf358663e957c8f1aed048c7
+art\prefab\maincity_02.prefab,e4785a6afdb8fa7bc1eb41bbb411b529
+art\prefab\maincity_03.prefab,b72cb5016c3e584d32ad3daebf32d884
+art\shader\cz_night2d_building.shader,23ebbef422b667784b8e9559e4b4fd1a

@@ -1,0 +1,11 @@
+StreamingAssets,b76ee2b9a8440196d9f03d8bb4dd0039,2
+art\prefab\book_03.prefab,3d77c1c20f5daee04c291a61d2690925,1
+art\maincity\o_city_bby_crop.png,1d2fed6e7800a8f55ab3274097c0605a,2
+art\model\barrel_01.fbx,3a9a987dd7dbc3c0fdbf380e24e8d71b,2
+art\model\materials\barrel_01.mat,5e91861139d0c5e27a0caeb22b9e4293,2
+art\model\materials\maincity_02.mat,b4fbc0f886829bd34291b5faf096b0f8,2
+art\prefab\barrel_01.prefab,514fb0cdb143f4320c5388592122050d,2
+art\prefab\barrel_02.prefab,f0b89a4bba75a9efc425fc86260cf011,2
+art\prefab\maincity_02.prefab,e4785a6afdb8fa7bc1eb41bbb411b529,2
+art\prefab\maincity_03.prefab,b72cb5016c3e584d32ad3daebf32d884,2
+2
