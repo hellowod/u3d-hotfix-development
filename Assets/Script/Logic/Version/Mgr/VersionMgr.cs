@@ -95,16 +95,16 @@ namespace Framework
         /// </summary>
         private void GetClientVersion()
         {
-            m_appVersion = VersionConfig.s_appVersion;
+            m_appVersion = VersionConfig.APP_VERSION;
             if (m_versionFileOnClient != null) {
                 m_resVersion = m_versionFileOnClient.ResVersion;
                 return;
             }
-            string verionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.s_versionFileName);
+            string verionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.VERSION_FILE_NAME);
             // 获得上一次客户端更新到的版本
             string content = SimpleLoader.LoadText(verionFilePath);
             if (string.IsNullOrEmpty(content)) {
-                m_resVersion = VersionConfig.s_resVersion;
+                m_resVersion = VersionConfig.RES_VERSION;
             } else {
                 FileHelper.ParseVersionFile(content, ref m_versionFileOnClient);
                 m_resVersion = m_versionFileOnClient.ResVersion;
@@ -121,7 +121,7 @@ namespace Framework
         {
             //首先下载updateFile文件，然后从updateFile文件里面下载需要更新的资源
             Debug.Log("Begin download version files");
-            string versionFileDownUrl = string.Format("{0}/{1}/{2}", m_serverResult.DownloadBaseUrl, m_serverResult.ResVersion, VersionConfig.s_versionFileName);
+            string versionFileDownUrl = string.Format("{0}/{1}/{2}", m_serverResult.DownloadBaseUrl, m_serverResult.ResVersion, VersionConfig.VERSION_FILE_NAME);
             Debug.Log(versionFileDownUrl);
             DownloadMgr.Instance.Download(versionFileDownUrl, OnVersionFileDownloadOnFinsh, delay);
         }
@@ -249,7 +249,7 @@ namespace Framework
         private void WriteVersionFile()
         {
             string str = FileHelper.ConvertVersionFileToString(m_versionFileOnServer);
-            string versionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.s_versionFileName);
+            string versionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.VERSION_FILE_NAME);
             File.WriteAllText(versionFilePath, str, System.Text.Encoding.UTF8);
         }
 

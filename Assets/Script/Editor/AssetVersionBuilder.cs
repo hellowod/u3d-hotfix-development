@@ -111,7 +111,7 @@ namespace Framework
                 Debug.LogError("Load last update file failed!");
                 return false;
             }
-            if (s_versionFile.ResVersion == VersionConfig.s_resVersion) {
+            if (s_versionFile.ResVersion == VersionConfig.RES_VERSION) {
                 Debug.LogError("You must change your res_verion in version config if you want to publish a patch");
                 return false;
             }
@@ -139,7 +139,7 @@ namespace Framework
                 return;
             }
             // set update files version
-            string newVersion = VersionConfig.s_resVersion;
+            string newVersion = VersionConfig.RES_VERSION;
             s_versionFile.ResVersion = newVersion;
             for (int i = 0; i < needUpdateFileList.Count; i++) {
                 s_versionFile.FilesDic[needUpdateFileList[i]] = new VersionFileInfo(s_allFilesMd5NowVersion[needUpdateFileList[i]], newVersion);
