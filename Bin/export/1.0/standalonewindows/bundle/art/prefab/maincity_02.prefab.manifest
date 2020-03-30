@@ -1,0 +1,26 @@
+ManifestFileVersion: 0
+CRC: 2467394123
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5becbc5e1c55c04c266571c0f4b30e9d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c2f4002a38d88e4f5123c1b135eae12a
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Art/Prefab/MainCity_02.prefab
+Dependencies:
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/1.0/standalonewindows/bundle/art/maincity/o_city_bby_crop.png
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/1.0/standalonewindows/bundle/art/model/materials/maincity_02.mat

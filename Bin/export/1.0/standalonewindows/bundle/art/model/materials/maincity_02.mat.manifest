@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 1007805294
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6dc6e93095be39813eb1ed9fa25943c1
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: fe397485c3cec1106b49e9ff95e8f8a2
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Art/Model/Materials/MainCity_02.mat
+Dependencies:
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/1.0/standalonewindows/bundle/art/maincity/o_city_bby_alpha.png
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/1.0/standalonewindows/bundle/art/shader/cz_night2d_building.shader

@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 1318743859
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: be44fbda3e60223ec6b8b69edc2df6de
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: fe397485c3cec1106b49e9ff95e8f8a2
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Art/Model/Materials/Barrel_01.mat
+Dependencies: []

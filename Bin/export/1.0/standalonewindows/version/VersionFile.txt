@@ -1,0 +1,5 @@
+bundle,99be333f92bc6916cf76a2c609057da9,2
+art\prefab\maincity_04.prefab,aa1d17b7a92dc487143849f1bf172177,1
+art\prefab\book_05.prefab,fd9dba1fda68102b692883250f691ca2,2
+art\prefab\maincity_05.prefab,b2b667c367851cff4a5c089286379930,2
+2

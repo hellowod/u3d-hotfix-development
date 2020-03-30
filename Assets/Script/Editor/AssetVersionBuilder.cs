@@ -354,7 +354,7 @@ namespace Framework
         /// </summary>
         private static void BuildText()
         {
-            AssetTextBuilder.BuildText();
+            //AssetTextBuilder.BuildText();
         }
     }
 }

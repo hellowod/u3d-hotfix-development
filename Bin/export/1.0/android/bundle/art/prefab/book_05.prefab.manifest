@@ -1,0 +1,28 @@
+ManifestFileVersion: 0
+CRC: 606724846
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ff458a7e2ed52eba4c479b19fef72053
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ce00b96eb05100871f39954dc67941ec
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+Assets:
+- Assets/Art/Prefab/Book_05.prefab
+Dependencies:
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/1.0/android/bundle/art/model/book_01.fbx
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/1.0/android/bundle/art/model/materials/book_01.mat
