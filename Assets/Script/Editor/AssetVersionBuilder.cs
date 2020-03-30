@@ -180,8 +180,8 @@ namespace Framework
                 Directory.CreateDirectory(versionMD5Folder);
             }
             StringBuilder sb = new StringBuilder();
-            foreach (KeyValuePair<string, string> kvp in s_allFilesMd5NowVersion) {
-                string content = kvp.Key + "," + kvp.Value + "\n";
+            foreach (KeyValuePair<string, string> pair in s_allFilesMd5NowVersion) {
+                string content = pair.Key + "," + pair.Value + "\n";
                 sb.Append(content);
             }
             File.WriteAllText(s_versionMD5FilePath, sb.ToString());
@@ -233,7 +233,7 @@ namespace Framework
                         continue;
                     }
                     string fileMD5 = FileHelper.GetMd5Val(files[i].FullName);
-                    string fileRelativePath = files[i].FullName.Substring(s_bundlesPath.Length + 1);
+                    string fileRelativePath = files[i].FullName.Replace(Path.GetFullPath(s_bundlesPath), "");
                     s_allFilesMd5NowVersion[fileRelativePath] = fileMD5;
                 } catch (Exception ex) {
                     throw new Exception("GetMD5HashFromFile fail,error:" + ex.Message);
@@ -249,15 +249,15 @@ namespace Framework
         private static List<string> GenerateDiffFilesList()
         {
             List<string> needUpdateFileList = new List<string>();
-            foreach (KeyValuePair<string, string> kvp in s_allFilesMd5NowVersion) {
-                if (s_allFilesMd5LastVersion.ContainsKey(kvp.Key)) {
-                    if (s_allFilesMd5LastVersion[kvp.Key] == kvp.Value) {
+            foreach (KeyValuePair<string, string> pair in s_allFilesMd5NowVersion) {
+                if (s_allFilesMd5LastVersion.ContainsKey(pair.Key)) {
+                    if (s_allFilesMd5LastVersion[pair.Key] == pair.Value) {
                         continue;
                     } else {
-                        needUpdateFileList.Add(kvp.Key);
+                        needUpdateFileList.Add(pair.Key);
                     }
                 } else {
-                    needUpdateFileList.Add(kvp.Key);
+                    needUpdateFileList.Add(pair.Key);
                 }
             }
             return needUpdateFileList;
