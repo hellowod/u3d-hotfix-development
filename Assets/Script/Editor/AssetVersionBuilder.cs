@@ -11,16 +11,16 @@ namespace Framework
 {
     public class AssetVersionBuilder : Editor
     {
-        public static string s_bundlesPath = EditorUtils.GetExportBundlePath();
+        public static string s_bundlesPath = EditorPathUtil.GetExportAssetBundlePath();
 
-        private static string s_verionFilePath = EditorUtils.GetExportVersionPath();
-        private static string s_versionMD5FilePath = EditorUtils.GetExportVersionMD5Path();
+        private static string s_verionFilePath = EditorPathUtil.GetExportVersionPath();
+        private static string s_versionMD5FilePath = EditorPathUtil.GetExportVersionMD5Path();
         
         
         private static Dictionary<string, string> s_allFilesMd5NowVersion = new Dictionary<string, string>();
         private static Dictionary<string, string> s_allFilesMd5LastVersion = new Dictionary<string, string>();
 
-        private static string s_versionPatchPath = EditorUtils.GetExportPatchPath();
+        private static string s_versionPatchPath = EditorPathUtil.GetExportPatchPath();
 
         private static VersionFileModel s_versionFile = new VersionFileModel();
 
@@ -61,8 +61,8 @@ namespace Framework
         private static void ExportProject()
         {
             BuildPlayerOptions options = new BuildPlayerOptions();
-            options.target = EditorUtils.GetBuildTarget();
-            string exportPath = EditorUtils.GetExportProjectPath();
+            options.target = EditorPathUtil.GetBuildTarget();
+            string exportPath = EditorPathUtil.GetExportProjectPath();
             string folderPath = Path.GetDirectoryName(exportPath);
             if (Directory.Exists(folderPath)) {
                 FileUtil.DeleteFileOrDirectory(folderPath);
@@ -306,8 +306,8 @@ namespace Framework
         {
             if (updatedFiles.Count > 0) {
                 for (int i = 0; i < updatedFiles.Count; i++) {
-                    string assetbundleSrcPath = Path.Combine(EditorUtils.GetExportBundlePath(), updatedFiles[i]);
-                    string assetbundleDstPath = Path.Combine(EditorUtils.GetExportPatchPath(), updatedFiles[i]);
+                    string assetbundleSrcPath = Path.Combine(EditorPathUtil.GetExportAssetBundlePath(), updatedFiles[i]);
+                    string assetbundleDstPath = Path.Combine(EditorPathUtil.GetExportPatchPath(), updatedFiles[i]);
                     string destDir = Path.GetDirectoryName(assetbundleDstPath);
                     if (!Directory.Exists(destDir)) {
                         Directory.CreateDirectory(destDir);
