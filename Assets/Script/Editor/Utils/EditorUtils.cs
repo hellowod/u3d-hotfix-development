@@ -36,11 +36,11 @@ public class EditorUtils
     {
         BuildTarget target = GetBuildTarget();
         if (target == BuildTarget.StandaloneWindows || target == BuildTarget.StandaloneWindows64) {
-            return string.Format("Bin/export/{0}/application/{1}.exe", target.ToString(), PlayerSettings.productName);
+            return string.Format("Bin/export/{0}/{1}/app/{2}.exe", VersionConfig.s_appVersion, target.ToString().ToLower(), PlayerSettings.productName);
         } else if (target == BuildTarget.StandaloneOSX) {
-            return string.Format("Bin/export/{0}/application/{1}.app", target.ToString(), PlayerSettings.productName);
+            return string.Format("Bin/export/{0}/{1}/app/{2}.app", VersionConfig.s_appVersion, target.ToString().ToLower(), PlayerSettings.productName);
         } else {
-            return string.Format("Bin/export/{0}/application/{1}/", target.ToString(), PlayerSettings.productName);
+            return string.Format("Bin/export/{0}/{1}/app/{2}/", VersionConfig.s_appVersion, target.ToString().ToLower(), PlayerSettings.productName);
         }
     }
 
@@ -51,7 +51,7 @@ public class EditorUtils
     public static string GetExportBundlePath()
     {
         BuildTarget target = GetBuildTarget();
-        return string.Format("Bin/export/{0}/assetbundle/", target.ToString());
+        return string.Format("Bin/export/{0}/{1}/bundle/", VersionConfig.s_appVersion, target.ToString().ToLower());
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class EditorUtils
     public static string GetExportVersionMD5Path()
     {
         BuildTarget target = GetBuildTarget();
-        return string.Format("Bin/export/{0}/versionfile/{1}", target.ToString(), "VersionMD5File.txt");
+        return string.Format("Bin/export/{0}/{1}/version/VersionMD5File.txt", VersionConfig.s_appVersion, target.ToString().ToLower());
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class EditorUtils
     public static string GetExportVersionPath()
     {
         BuildTarget target = GetBuildTarget();
-        return string.Format("Bin/export/{0}/versionfile/{1}", target.ToString(), VersionConfig.s_versionFileName);
+        return string.Format("Bin/export/{0}/{1}/version/{2}", VersionConfig.s_appVersion, target.ToString().ToLower(), VersionConfig.s_versionFileName);
     }
 
     /// <summary>
@@ -81,6 +81,6 @@ public class EditorUtils
     public static string GetExportPatchPath()
     {
         BuildTarget target = GetBuildTarget();
-        return string.Format("Bin/export/{0}/patch/{1}/{2}", target.ToString(), VersionConfig.s_appVersion, VersionConfig.s_resVersion);
+        return string.Format("Bin/export/{0}/patch/{1}/{2}", VersionConfig.s_appVersion, target.ToString().ToLower(), VersionConfig.s_resVersion);
     }
 }

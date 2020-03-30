@@ -1,3 +1,0 @@
-assetbundle,b2ba57808a74508318b263ee831a6c72,1
-art\prefab\book_03.prefab,5702a38378148df1ec124da32376f181,1
-1
