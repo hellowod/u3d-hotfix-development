@@ -58,10 +58,20 @@ public class EditorUtils
     /// 获取导出项目路径
     /// </summary>
     /// <returns></returns>
+    public static string GetExportVersionMD5Path()
+    {
+        BuildTarget target = GetBuildTarget();
+        return string.Format("Bin/export/{0}/versionfile/{1}", target.ToString(), "VersionMD5File.txt");
+    }
+
+    /// <summary>
+    /// 获取导出项目路径
+    /// </summary>
+    /// <returns></returns>
     public static string GetExportVersionPath()
     {
         BuildTarget target = GetBuildTarget();
-        return string.Format("Bin/export/{0}/versionfile/", target.ToString());
+        return string.Format("Bin/export/{0}/versionfile/{1}", target.ToString(), VersionConfig.s_versionFileName);
     }
 
     /// <summary>

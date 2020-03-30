@@ -11,25 +11,18 @@ namespace Framework
 {
     public class AssetVersionBuilder : Editor
     {
-        public static string s_assetsPath = EditorUtils.GetExportBundlePath();
+        public static string s_bundlesPath = EditorUtils.GetExportBundlePath();
 
-        private static string s_versionFilesPath = EditorUtils.GetExportVersionPath();
-
-        private static string s_versionMD5FileName = "VersionMD5File.txt";
-        private static string s_verionFileName = "";
-
-        private static string s_exportPath = "";
-
+        private static string s_verionFilePath = EditorUtils.GetExportVersionPath();
+        private static string s_versionMD5FilePath = EditorUtils.GetExportVersionMD5Path();
+        
+        
         private static Dictionary<string, string> s_allFilesMd5NowVersion = new Dictionary<string, string>();
         private static Dictionary<string, string> s_allFilesMd5LastVersion = new Dictionary<string, string>();
 
-        private static VersionFileModel s_versionFile = new VersionFileModel();
+        private static string s_versionPatchPath = EditorUtils.GetExportPatchPath(VersionConfig.s_appVersion, VersionConfig.s_resVersion);
 
-        static AssetVersionBuilder()
-        {
-            s_versionMD5FileName = s_versionFilesPath + s_versionMD5FileName;
-            s_verionFileName = s_versionFilesPath + VersionConfig.s_versionFileName;
-        }
+        private static VersionFileModel s_versionFile = new VersionFileModel();
 
         [MenuItem("Tool/Version/CleanBuildApp")]
         private static void BuildApp()
@@ -110,7 +103,7 @@ namespace Framework
         /// <returns></returns>
         private static bool CheckCanBuildPatch()
         {
-            if (!File.Exists(s_versionMD5FileName)) {
+            if (!File.Exists(s_versionMD5FilePath)) {
                 Debug.LogError("Can not find last version,you may execute \"CleanBuildApp\" first if you want to update assetbundles based on last version");
                 return false;
             }
@@ -172,8 +165,8 @@ namespace Framework
         /// </summary>
         private static void CleanVersionFiles()
         {
-            if (Directory.Exists(s_versionFilesPath)) {
-                Directory.Delete(s_versionFilesPath, true);
+            if (Directory.Exists(s_versionMD5FilePath)) {
+                Directory.Delete(s_versionMD5FilePath, true);
             }
         }
 
@@ -182,15 +175,16 @@ namespace Framework
         /// </summary>
         private static void WriteVersionMd5Files()
         {
-            if (!Directory.Exists(s_versionFilesPath)) {
-                Directory.CreateDirectory(s_versionFilesPath);
+            string versionMD5Folder = Path.GetDirectoryName(s_versionMD5FilePath);
+            if (!Directory.Exists(versionMD5Folder)) {
+                Directory.CreateDirectory(versionMD5Folder);
             }
             StringBuilder sb = new StringBuilder();
             foreach (KeyValuePair<string, string> kvp in s_allFilesMd5NowVersion) {
                 string content = kvp.Key + "," + kvp.Value + "\n";
                 sb.Append(content);
             }
-            File.WriteAllText(s_versionMD5FileName, sb.ToString());
+            File.WriteAllText(s_versionMD5FilePath, sb.ToString());
         }
 
         /// <summary>
@@ -201,7 +195,7 @@ namespace Framework
         {
             try {
                 s_allFilesMd5LastVersion.Clear();
-                string[] content = File.ReadAllLines(s_versionMD5FileName);
+                string[] content = File.ReadAllLines(s_versionMD5FilePath);
                 if (content != null) {
                     for (int i = 0; i < content.Length; i++) {
                         if (!string.IsNullOrEmpty(content[i])) {
@@ -227,11 +221,11 @@ namespace Framework
         private static bool GenerateAllFilesMD5()
         {
             s_allFilesMd5NowVersion.Clear();
-            if (!Directory.Exists(s_assetsPath)) {
-                Debug.LogError(string.Format("AssetsPath path {0} not exist", s_assetsPath));
+            if (!Directory.Exists(s_bundlesPath)) {
+                Debug.LogError(string.Format("AssetsPath path {0} not exist", s_bundlesPath));
                 return false;
             }
-            DirectoryInfo dir = new DirectoryInfo(s_assetsPath);
+            DirectoryInfo dir = new DirectoryInfo(s_bundlesPath);
             FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
             for (var i = 0; i < files.Length; ++i) {
                 try {
@@ -239,7 +233,7 @@ namespace Framework
                         continue;
                     }
                     string fileMD5 = FileHelper.GetMd5Val(files[i].FullName);
-                    string fileRelativePath = files[i].FullName.Substring(s_assetsPath.Length + 1);
+                    string fileRelativePath = files[i].FullName.Substring(s_bundlesPath.Length + 1);
                     s_allFilesMd5NowVersion[fileRelativePath] = fileMD5;
                 } catch (Exception ex) {
                     throw new Exception("GetMD5HashFromFile fail,error:" + ex.Message);
@@ -293,9 +287,9 @@ namespace Framework
         private static VersionFileModel LoadVersionFile()
         {
             s_versionFile = new VersionFileModel();
-            if (File.Exists(s_verionFileName)) {
+            if (File.Exists(s_verionFilePath)) {
                 try {
-                    string content = File.ReadAllText(s_verionFileName);
+                    string content = File.ReadAllText(s_verionFilePath);
                     FileHelper.ParseVersionFile(content, ref s_versionFile);
                 } catch (Exception ex) {
                     throw new Exception("Load UpdateFile Error:" + ex.Message);
@@ -311,7 +305,6 @@ namespace Framework
         private static void ExportUpdateFiles(List<string> updatedFiles)
         {
             if (updatedFiles.Count > 0) {
-                s_exportPath = EditorUtils.GetExportPatchPath(VersionConfig.s_appVersion, VersionConfig.s_resVersion);
                 for (int i = 0; i < updatedFiles.Count; i++) {
                     string assetbundleDestPath = updatedFiles[i];
                     string assetbundleSrcPath = updatedFiles[i];
@@ -322,8 +315,8 @@ namespace Framework
                     File.Copy(assetbundleSrcPath, assetbundleDestPath, true);
                 }
             }
-            string versionFileSrcPath = s_verionFileName;
-            string versionFileDestPath = s_exportPath + "/" + Path.GetFileName(versionFileSrcPath);
+            string versionFileSrcPath = s_verionFilePath;
+            string versionFileDestPath = s_versionPatchPath + "/" + Path.GetFileName(versionFileSrcPath);
             string updateFileDestDir = Path.GetDirectoryName(versionFileDestPath);
             if (!Directory.Exists(updateFileDestDir)) {
                 Directory.CreateDirectory(updateFileDestDir);
@@ -334,7 +327,7 @@ namespace Framework
         private static void WriteVersionFiles()
         {
             string str = FileHelper.ConvertVersionFileToString(s_versionFile);
-            File.WriteAllText(s_verionFileName, str);
+            File.WriteAllText(s_verionFilePath, str);
         }
 
         /// <summary>
@@ -342,8 +335,8 @@ namespace Framework
         /// </summary>
         private static void CleanBuildAllBundle()
         {
-            if (Directory.Exists(s_assetsPath)) {
-                Directory.Delete(s_assetsPath, true);
+            if (Directory.Exists(s_bundlesPath)) {
+                Directory.Delete(s_bundlesPath, true);
             }
             BuildAllBundle();
         }
