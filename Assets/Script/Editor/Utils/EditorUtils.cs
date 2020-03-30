@@ -32,15 +32,15 @@ public class EditorUtils
     /// 获取导出项目路径
     /// </summary>
     /// <returns></returns>
-    public static string GetExportProjectPath(string type)
+    public static string GetExportProjectPath()
     {
         BuildTarget target = GetBuildTarget();
         if (target == BuildTarget.StandaloneWindows || target == BuildTarget.StandaloneWindows64) {
-            return string.Format("Bin/export/{0}/{1}/{2}.exe", target.ToString(), type, PlayerSettings.productName);
+            return string.Format("Bin/export/{0}/application/{1}.exe", target.ToString(), PlayerSettings.productName);
         } else if (target == BuildTarget.StandaloneOSX) {
-            return string.Format("Bin/export/{0}/{1}/{2}.app", target.ToString(), type, PlayerSettings.productName);
+            return string.Format("Bin/export/{0}/application/{1}.app", target.ToString(), PlayerSettings.productName);
         } else {
-            return string.Format("Bin/export/{0}/{1}/{2}/", target.ToString(), type, PlayerSettings.productName);
+            return string.Format("Bin/export/{0}/application/{1}/", target.ToString(), PlayerSettings.productName);
         }
     }
 
@@ -78,9 +78,9 @@ public class EditorUtils
     /// 获取导出补丁的路径
     /// </summary>
     /// <returns></returns>
-    public static string GetExportPatchPath(string appVersion, string resVersion)
+    public static string GetExportPatchPath()
     {
         BuildTarget target = GetBuildTarget();
-        return string.Format("Bin/export/{0}/patch/{1}/{2}", target.ToString(), appVersion, resVersion);
+        return string.Format("Bin/export/{0}/patch/{1}/{2}", target.ToString(), VersionConfig.s_appVersion, VersionConfig.s_resVersion);
     }
 }

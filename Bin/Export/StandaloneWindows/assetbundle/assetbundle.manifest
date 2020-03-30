@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3590381841
+CRC: 2973458005
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -49,17 +49,12 @@ AssetBundleManifest:
         Dependency_0: art/model/book_01.fbx
         Dependency_1: art/model/materials/book_01.mat
     Info_12:
-      Name: art/prefab/book_04.prefab
-      Dependencies:
-        Dependency_0: art/model/book_01.fbx
-        Dependency_1: art/model/materials/book_01.mat
-    Info_13:
       Name: art/prefab/maincity_01.prefab
       Dependencies:
         Dependency_0: art/maincity/o_city_bby_alpha.png
         Dependency_1: art/shader/cz_night2d_building.shader
         Dependency_2: art/maincity/o_city_bby_crop.png
-    Info_14:
+    Info_13:
       Name: art/prefab/maincity_02.prefab
       Dependencies:
         Dependency_0: art/maincity/o_city_bby_alpha.png

@@ -20,7 +20,7 @@ namespace Framework
         private static Dictionary<string, string> s_allFilesMd5NowVersion = new Dictionary<string, string>();
         private static Dictionary<string, string> s_allFilesMd5LastVersion = new Dictionary<string, string>();
 
-        private static string s_versionPatchPath = EditorUtils.GetExportPatchPath(VersionConfig.s_appVersion, VersionConfig.s_resVersion);
+        private static string s_versionPatchPath = EditorUtils.GetExportPatchPath();
 
         private static VersionFileModel s_versionFile = new VersionFileModel();
 
@@ -62,7 +62,7 @@ namespace Framework
         {
             BuildPlayerOptions options = new BuildPlayerOptions();
             options.target = EditorUtils.GetBuildTarget();
-            string exportPath = EditorUtils.GetExportProjectPath("application");
+            string exportPath = EditorUtils.GetExportProjectPath();
             string folderPath = Path.GetDirectoryName(exportPath);
             if (Directory.Exists(folderPath)) {
                 FileUtil.DeleteFileOrDirectory(folderPath);
@@ -306,22 +306,22 @@ namespace Framework
         {
             if (updatedFiles.Count > 0) {
                 for (int i = 0; i < updatedFiles.Count; i++) {
-                    string assetbundleDestPath = updatedFiles[i];
-                    string assetbundleSrcPath = updatedFiles[i];
-                    string destDir = Path.GetDirectoryName(assetbundleDestPath);
+                    string assetbundleSrcPath = Path.Combine(EditorUtils.GetExportBundlePath(), updatedFiles[i]);
+                    string assetbundleDstPath = Path.Combine(EditorUtils.GetExportPatchPath(), updatedFiles[i]);
+                    string destDir = Path.GetDirectoryName(assetbundleDstPath);
                     if (!Directory.Exists(destDir)) {
                         Directory.CreateDirectory(destDir);
                     }
-                    File.Copy(assetbundleSrcPath, assetbundleDestPath, true);
+                    File.Copy(assetbundleSrcPath, assetbundleDstPath, true);
                 }
             }
             string versionFileSrcPath = s_verionFilePath;
-            string versionFileDestPath = s_versionPatchPath + "/" + Path.GetFileName(versionFileSrcPath);
-            string updateFileDestDir = Path.GetDirectoryName(versionFileDestPath);
+            string versionFileDstPath = Path.Combine(s_versionPatchPath, Path.GetFileName(versionFileSrcPath));
+            string updateFileDestDir = Path.GetDirectoryName(versionFileDstPath);
             if (!Directory.Exists(updateFileDestDir)) {
                 Directory.CreateDirectory(updateFileDestDir);
             }
-            File.Copy(versionFileSrcPath, versionFileDestPath, true);
+            File.Copy(versionFileSrcPath, versionFileDstPath, true);
         }
 
         private static void WriteVersionFiles()
