@@ -61,7 +61,7 @@ namespace Framework
         private static void ExportProject()
         {
             BuildPlayerOptions options = new BuildPlayerOptions();
-            options.target = EditorPathUtil.GetBuildTarget();
+            options.target = EditorBaseUtil.GetBuildTarget();
             string exportPath = EditorPathUtil.GetExportProjectPath();
             string folderPath = Path.GetDirectoryName(exportPath);
             if (Directory.Exists(folderPath)) {
