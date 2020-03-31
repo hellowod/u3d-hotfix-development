@@ -11,16 +11,15 @@ namespace Framework
 {
     public class AssetVersionBuilder : Editor
     {
-        public static string s_bundlesPath = EditorPathUtil.GetExportAssetBundlePath();
+        public static string s_assetBundlesPath = EditorPathUtil.GetExportAssetBundlePath();
 
-        private static string s_verionFilePath = EditorPathUtil.GetExportVersionPath();
+        private static string s_versionFilePath = EditorPathUtil.GetExportVersionPath();
         private static string s_versionMD5FilePath = EditorPathUtil.GetExportVersionMD5Path();
-        
-        
-        private static Dictionary<string, string> s_allFilesMd5NowVersion = new Dictionary<string, string>();
-        private static Dictionary<string, string> s_allFilesMd5LastVersion = new Dictionary<string, string>();
 
         private static string s_versionPatchPath = EditorPathUtil.GetExportPatchPath();
+
+        private static Dictionary<string, string> s_allFilesMd5NowVersion = new Dictionary<string, string>();
+        private static Dictionary<string, string> s_allFilesMd5LastVersion = new Dictionary<string, string>();
 
         private static VersionFileModel s_versionFile = new VersionFileModel();
 
@@ -221,11 +220,11 @@ namespace Framework
         private static bool GenerateAllFilesMD5()
         {
             s_allFilesMd5NowVersion.Clear();
-            if (!Directory.Exists(s_bundlesPath)) {
-                Debug.LogError(string.Format("AssetsPath path {0} not exist", s_bundlesPath));
+            if (!Directory.Exists(s_assetBundlesPath)) {
+                Debug.LogError(string.Format("AssetsPath path {0} not exist", s_assetBundlesPath));
                 return false;
             }
-            DirectoryInfo dir = new DirectoryInfo(s_bundlesPath);
+            DirectoryInfo dir = new DirectoryInfo(s_assetBundlesPath);
             FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
             for (var i = 0; i < files.Length; ++i) {
                 try {
@@ -233,7 +232,7 @@ namespace Framework
                         continue;
                     }
                     string fileMD5 = FileHelper.GetMd5Val(files[i].FullName);
-                    string fileRelativePath = files[i].FullName.Replace(Path.GetFullPath(s_bundlesPath), "");
+                    string fileRelativePath = files[i].FullName.Replace(Path.GetFullPath(s_assetBundlesPath), "");
                     s_allFilesMd5NowVersion[fileRelativePath] = fileMD5;
                 } catch (Exception ex) {
                     throw new Exception("GetMD5HashFromFile fail,error:" + ex.Message);
@@ -287,9 +286,9 @@ namespace Framework
         private static VersionFileModel LoadVersionFile()
         {
             s_versionFile = new VersionFileModel();
-            if (File.Exists(s_verionFilePath)) {
+            if (File.Exists(s_versionFilePath)) {
                 try {
-                    string content = File.ReadAllText(s_verionFilePath);
+                    string content = File.ReadAllText(s_versionFilePath);
                     FileHelper.ParseVersionFile(content, ref s_versionFile);
                 } catch (Exception ex) {
                     throw new Exception("Load UpdateFile Error:" + ex.Message);
@@ -315,7 +314,7 @@ namespace Framework
                     File.Copy(assetbundleSrcPath, assetbundleDstPath, true);
                 }
             }
-            string versionFileSrcPath = s_verionFilePath;
+            string versionFileSrcPath = s_versionFilePath;
             string versionFileDstPath = Path.Combine(s_versionPatchPath, Path.GetFileName(versionFileSrcPath));
             string updateFileDestDir = Path.GetDirectoryName(versionFileDstPath);
             if (!Directory.Exists(updateFileDestDir)) {
@@ -327,7 +326,7 @@ namespace Framework
         private static void WriteVersionFiles()
         {
             string str = FileHelper.ConvertVersionFileToString(s_versionFile);
-            File.WriteAllText(s_verionFilePath, str);
+            File.WriteAllText(s_versionFilePath, str);
         }
 
         /// <summary>
@@ -335,8 +334,8 @@ namespace Framework
         /// </summary>
         private static void CleanBuildAllBundle()
         {
-            if (Directory.Exists(s_bundlesPath)) {
-                Directory.Delete(s_bundlesPath, true);
+            if (Directory.Exists(s_assetBundlesPath)) {
+                Directory.Delete(s_assetBundlesPath, true);
             }
             BuildAllBundle();
         }
