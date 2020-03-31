@@ -22,7 +22,7 @@ public class EditorPathUtil
     }
 
     /// <summary>
-    /// 获取assetbundle导出路径
+    /// 获取AssetBundle路径
     /// </summary>
     /// <returns></returns>
     public static string GetExportAssetBundlePath()
@@ -31,21 +31,21 @@ public class EditorPathUtil
     }
 
     /// <summary>
-    /// 获取导出项目路径
+    /// 获取项目导出生成包版本路径
     /// </summary>
     /// <returns></returns>
-    public static string GetExportVersionMD5Path()
+    public static string GetExportVersionFullFilePath()
     {
-        return string.Format("{0}/version/VersionMD5File.txt", RootPath);
+        return string.Format("{0}/version/VersionFullFile.txt", RootPath);
     }
 
     /// <summary>
-    /// 获取导出项目路径
+    /// 获取最新的版本文件路径
     /// </summary>
     /// <returns></returns>
-    public static string GetExportVersionPath()
+    public static string GetExportVersionLastFilePath()
     {
-        return string.Format("{0}/version/{1}", RootPath, VersionConfig.VERSION_FILE_NAME);
+        return string.Format("{0}/version/{1}", RootPath, VersionConfig.VERSION_LAST_FILE);
     }
 
     /// <summary>
