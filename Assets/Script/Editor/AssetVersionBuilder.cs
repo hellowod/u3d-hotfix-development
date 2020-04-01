@@ -14,7 +14,7 @@ namespace Framework
         public static string s_assetBundlesPath = EditorPathUtil.GetExportAssetBundlePath();
 
         private static string s_versionFullFilePath = EditorPathUtil.GetExportVersionFullFilePath();
-        private static string s_versionLastFilePath = EditorPathUtil.GetExportVersionLastFilePath();
+        private static string s_versionDiffFilePath = EditorPathUtil.GetExportVersionDiffFilePath();
 
         private static string s_versionPatchPath = EditorPathUtil.GetExportPatchPath();
 
@@ -106,7 +106,7 @@ namespace Framework
                 Debug.LogError("Can not find last version,you may execute \"CleanBuildApp\" first if you want to update assetbundles based on last version.");
                 return false;
             }
-            if (LoadLastVersionFile() == null) {
+            if (LoadDiffVersionFile() == null) {
                 Debug.LogError("Load last version update file failed!");
                 return false;
             }
@@ -118,16 +118,16 @@ namespace Framework
         }
 
         /// <summary>
-        /// 生成更新版本文件
+        /// 更新版本文件
         /// </summary>
         private static void GenerateUpdateFiles()
         {
             if (!LoadFullVersionFile()) {
-                Debug.LogError("Load last version md5 file failed!");
+                Debug.LogError("Load last full version md5 file failed!");
                 return;
             }
             if (!GenerateFullVersionFile()) {
-                Debug.LogError("Generate new version md5 file failed!");
+                Debug.LogError("Generate new full version md5 file failed!");
                 return;
             }
 
@@ -137,22 +137,23 @@ namespace Framework
                 Debug.LogError("nothing need update");
                 return;
             }
-            // set update files version
+            // 设置更新文件
             string newVersion = VersionConfig.RES_VERSION;
             s_versionFile.ResVersion = newVersion;
             for (int i = 0; i < needUpdateFileList.Count; i++) {
                 s_versionFile.FilesDic[needUpdateFileList[i]] = new VersionFileInfo(s_allFilesMd5DiffVersion[needUpdateFileList[i]], newVersion);
             }
-            // delete unused assetbundles
+            // 删除未使用文件
             for (int i = 0; i < needDeleteFileList.Count; i++) {
                 if (s_versionFile.FilesDic.ContainsKey(needDeleteFileList[i])) {
                     s_versionFile.FilesDic.Remove(needDeleteFileList[i]);
                 }
             }
-            WriteLastVersionFile();
+            // 更新版本文件
+            WriteDiffVersionFile();
             WriteFullVersionFile();
 
-            //export update assetbundles
+            // 导出更新文件
             ExportUpdateFiles(needUpdateFileList);
 
             AssetDatabase.SaveAssets();
@@ -283,12 +284,12 @@ namespace Framework
         /// 加载版本文件
         /// </summary>
         /// <returns></returns>
-        private static VersionFileModel LoadLastVersionFile()
+        private static VersionFileModel LoadDiffVersionFile()
         {
             s_versionFile = new VersionFileModel();
-            if (File.Exists(s_versionLastFilePath)) {
+            if (File.Exists(s_versionDiffFilePath)) {
                 try {
-                    string content = File.ReadAllText(s_versionLastFilePath);
+                    string content = File.ReadAllText(s_versionDiffFilePath);
                     FileHelper.ParseVersionFile(content, ref s_versionFile);
                 } catch (Exception ex) {
                     throw new Exception("Load UpdateFile Error:" + ex.Message);
@@ -314,7 +315,7 @@ namespace Framework
                     File.Copy(assetbundleSrcPath, assetbundleDstPath, true);
                 }
             }
-            string versionFileSrcPath = s_versionLastFilePath;
+            string versionFileSrcPath = s_versionDiffFilePath;
             string versionFileDstPath = Path.Combine(s_versionPatchPath, Path.GetFileName(versionFileSrcPath));
             string updateFileDestDir = Path.GetDirectoryName(versionFileDstPath);
             if (!Directory.Exists(updateFileDestDir)) {
@@ -323,10 +324,10 @@ namespace Framework
             File.Copy(versionFileSrcPath, versionFileDstPath, true);
         }
 
-        private static void WriteLastVersionFile()
+        private static void WriteDiffVersionFile()
         {
             string str = FileHelper.ConvertVersionFileToString(s_versionFile);
-            File.WriteAllText(s_versionLastFilePath, str);
+            File.WriteAllText(s_versionDiffFilePath, str);
         }
 
         /// <summary>

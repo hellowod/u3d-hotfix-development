@@ -100,7 +100,7 @@ namespace Framework
                 m_resVersion = m_versionFileOnClient.ResVersion;
                 return;
             }
-            string verionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.VERSION_LAST_FILE);
+            string verionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.VERSION_DIFF_FILE);
             // 获得上一次客户端更新到的版本
             string content = SimpleLoader.LoadText(verionFilePath);
             if (string.IsNullOrEmpty(content)) {
@@ -121,7 +121,7 @@ namespace Framework
         {
             //首先下载updateFile文件，然后从updateFile文件里面下载需要更新的资源
             Debug.Log("Begin download version files");
-            string versionFileDownUrl = string.Format("{0}/{1}/{2}", m_serverResult.DownloadBaseUrl, m_serverResult.ResVersion, VersionConfig.VERSION_LAST_FILE);
+            string versionFileDownUrl = string.Format("{0}/{1}/{2}", m_serverResult.DownloadBaseUrl, m_serverResult.ResVersion, VersionConfig.VERSION_DIFF_FILE);
             Debug.Log(versionFileDownUrl);
             DownloadMgr.Instance.Download(versionFileDownUrl, OnVersionFileDownloadOnFinsh, delay);
         }
@@ -249,7 +249,7 @@ namespace Framework
         private void WriteVersionFile()
         {
             string str = FileHelper.ConvertVersionFileToString(m_versionFileOnServer);
-            string versionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.VERSION_LAST_FILE);
+            string versionFilePath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, VersionConfig.VERSION_DIFF_FILE);
             File.WriteAllText(versionFilePath, str, System.Text.Encoding.UTF8);
         }
 

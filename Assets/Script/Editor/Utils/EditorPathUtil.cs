@@ -43,9 +43,9 @@ public class EditorPathUtil
     /// 获取最新的版本文件路径
     /// </summary>
     /// <returns></returns>
-    public static string GetExportVersionLastFilePath()
+    public static string GetExportVersionDiffFilePath()
     {
-        return string.Format("{0}/version/{1}", RootPath, VersionConfig.VERSION_LAST_FILE);
+        return string.Format("{0}/version/{1}", RootPath, VersionConfig.VERSION_DIFF_FILE);
     }
 
     /// <summary>
