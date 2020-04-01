@@ -29,7 +29,7 @@ namespace Framework
             CleanBuildAllBundle();
             BuildText();
             CleanAndWriteNewVersion();
-            ExportProject();
+            GenerateProject();
         }
 
         [MenuItem("Tool/Version/FastBuildApp")]
@@ -38,7 +38,7 @@ namespace Framework
             BuildAllBundle();
             BuildText();
             CleanAndWriteNewVersion();
-            ExportProject();
+            GenerateProject();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Framework
         /// </summary>
         private static void CleanAndWriteNewVersion()
         {
-            CleanVersionFiles();
+            CleanFullVersionFile();
             if (GenerateFullVersionFile()) {
                 WriteFullVersionFile();
             }
@@ -55,9 +55,9 @@ namespace Framework
         }
 
         /// <summary>
-        /// 导出目标工程
+        /// 生成目标工程
         /// </summary>
-        private static void ExportProject()
+        private static void GenerateProject()
         {
             BuildPlayerOptions options = new BuildPlayerOptions();
             options.target = EditorBaseUtil.GetBuildTarget();
@@ -82,7 +82,7 @@ namespace Framework
             if (CheckCanBuildPatch()) {
                 CleanBuildAllBundle();
                 BuildText();
-                GenerateUpdateFiles();
+                GenerateUpdateFile();
             }
         }
 
@@ -92,7 +92,7 @@ namespace Framework
             if (CheckCanBuildPatch()) {
                 BuildAllBundle();
                 BuildText();
-                GenerateUpdateFiles();
+                GenerateUpdateFile();
             }
         }
 
@@ -120,7 +120,7 @@ namespace Framework
         /// <summary>
         /// 更新版本文件
         /// </summary>
-        private static void GenerateUpdateFiles()
+        private static void GenerateUpdateFile()
         {
             if (!LoadFullVersionFile()) {
                 Debug.LogError("Load last full version md5 file failed!");
@@ -163,28 +163,11 @@ namespace Framework
         /// <summary>
         /// 清除版本文件
         /// </summary>
-        private static void CleanVersionFiles()
+        private static void CleanFullVersionFile()
         {
             if (Directory.Exists(s_versionFullFilePath)) {
                 Directory.Delete(s_versionFullFilePath, true);
             }
-        }
-
-        /// <summary>
-        /// 写新版本文件
-        /// </summary>
-        private static void WriteFullVersionFile()
-        {
-            string versionFullFolder = Path.GetDirectoryName(s_versionFullFilePath);
-            if (!Directory.Exists(versionFullFolder)) {
-                Directory.CreateDirectory(versionFullFolder);
-            }
-            StringBuilder sb = new StringBuilder();
-            foreach (KeyValuePair<string, string> pair in s_allFilesMd5DiffVersion) {
-                string content = pair.Key + "," + pair.Value + "\n";
-                sb.Append(content);
-            }
-            File.WriteAllText(s_versionFullFilePath, sb.ToString());
         }
 
         /// <summary>
@@ -212,6 +195,23 @@ namespace Framework
                 throw new Exception("Load full version file error:" + ex.Message);
             }
             return true;
+        }
+
+        /// <summary>
+        /// 写新版本文件
+        /// </summary>
+        private static void WriteFullVersionFile()
+        {
+            string versionFullFolder = Path.GetDirectoryName(s_versionFullFilePath);
+            if (!Directory.Exists(versionFullFolder)) {
+                Directory.CreateDirectory(versionFullFolder);
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (KeyValuePair<string, string> pair in s_allFilesMd5DiffVersion) {
+                string content = pair.Key + "," + pair.Value + "\n";
+                sb.Append(content);
+            }
+            File.WriteAllText(s_versionFullFilePath, sb.ToString());
         }
 
         /// <summary>

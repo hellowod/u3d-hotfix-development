@@ -29,30 +29,8 @@ namespace Framework
         private static List<AssetNode> s_leafAssetNodes = new List<AssetNode>();
         private static Dictionary<string, AssetNode> s_allAssetNodes = new Dictionary<string, AssetNode>();
         private static List<string> s_buildMap = new List<string>();
-
-        [MenuItem("Tool/Builder/BuildScene")]
-        private static void BuildScenesAssetBundles()
-        {
-            string outPath = s_assetBundlePath + "/Scenes/";
-            if (Directory.Exists(outPath)) {
-            } else {
-                DirectoryInfo newDirect = Directory.CreateDirectory(outPath);
-            }
-            //获取buildsetting里面enable的场景
-            foreach (EditorBuildSettingsScene e in EditorBuildSettings.scenes) {
-                if (e == null) {
-                    continue;
-                }
-                if (e.enabled) {
-                    string levelName = e.path.Substring(e.path.LastIndexOf("/") + 1);
-                    BuildPipeline.BuildPlayer(new string[1] { e.path }, outPath + levelName, EditorUserBuildSettings.activeBuildTarget, BuildOptions.BuildAdditionalStreamedScenes);
-                }
-            }
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
-
-        [MenuItem("Tool/Builder/BuildAssetbundle")]
+       
+        [MenuItem("Tool/Builder/Build Bundle")]
         public static void BuildAssetBundle()
         {
             Init();

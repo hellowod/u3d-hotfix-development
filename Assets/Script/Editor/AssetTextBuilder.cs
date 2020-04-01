@@ -13,7 +13,7 @@ namespace Framework
             "Art/Config",
         };
 
-        [MenuItem("Tool/Builder/BuildText")]
+        [MenuItem("Tool/Builder/Build Text")]
         public static void BuildText()
         {
             for (int i = 0; i < s_textFolder.Count; i++) {
