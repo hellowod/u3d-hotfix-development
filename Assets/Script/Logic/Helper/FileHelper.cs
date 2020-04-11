@@ -77,8 +77,8 @@ namespace Framework
         public static string ConvertVersionFileToString(VersionFileModel versionFile)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (KeyValuePair<string, VersionFileInfo> kvp in versionFile.FilesDic) {
-                string content = string.Format("{0},{1},{2}\n", kvp.Key, kvp.Value.md5, kvp.Value.version);
+            foreach (KeyValuePair<string, VersionFileInfo> pair in versionFile.FilesDic) {
+                string content = string.Format("{0},{1},{2}\n", pair.Key, pair.Value.md5, pair.Value.version);
                 sb.Append(content);
             }
             sb.Append(versionFile.ResVersion);
@@ -90,7 +90,7 @@ namespace Framework
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string GetMd5Val(string path)
+        public static string GetMd5Value(string path)
         {
             FileStream file = new FileStream(path, FileMode.Open);
             System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();

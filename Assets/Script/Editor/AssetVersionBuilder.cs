@@ -232,7 +232,7 @@ namespace Framework
                     if (files[i].Name.EndsWith(".meta") || files[i].Name.EndsWith(".manifest")) {
                         continue;
                     }
-                    string fileMD5 = FileHelper.GetMd5Val(files[i].FullName);
+                    string fileMD5 = FileHelper.GetMd5Value(files[i].FullName);
                     string fileRelativePath = files[i].FullName.Replace(Path.GetFullPath(s_assetBundlesPath), "");
                     s_allFilesMd5DiffVersion[fileRelativePath] = fileMD5;
                 } catch (Exception ex) {

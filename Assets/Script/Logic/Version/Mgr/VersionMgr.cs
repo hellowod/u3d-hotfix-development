@@ -169,7 +169,7 @@ namespace Framework
             foreach (KeyValuePair<string, VersionFileInfo> kvp in allFileDic) {
                 string filesDownloadPath = string.Format("{0}/{1}", DownloadConfig.DownLoadPath, kvp.Key);
                 if (File.Exists(filesDownloadPath)) {
-                    string md5 = FileHelper.GetMd5Val(filesDownloadPath);
+                    string md5 = FileHelper.GetMd5Value(filesDownloadPath);
                     if (!string.Equals(md5, kvp.Value.md5)) {
                         m_needUpdateFileList.Add(kvp.Key);
                     }
