@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 149585772
+CRC: 2117834533
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 528e52aa852d90429e5c5cddf2851a1f
+    Hash: b2c07f208d4cb1aeb62ccfcb5edfc86b
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 52b90fe34acdbe892c80e1ff630fee3e
+    Hash: cb5cff3a1350143ce413b676b0fb473f
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -15,15 +15,16 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
 - Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
-- Class: 212
-  Script: {instanceID: 0}
-- Class: 213
-  Script: {instanceID: 0}
 Assets:
-- Assets/Res/City/Building/city_building_bby_01.prefab
-Dependencies:
-- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/1.0/android/bundle/dep/city_building_bby_crop.ab
+- Assets/Res/Unit/Hero/unit_hero_dengkai.prefab
+Dependencies: []

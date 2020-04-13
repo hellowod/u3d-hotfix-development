@@ -1,60 +1,41 @@
 ManifestFileVersion: 0
-CRC: 4274965
+CRC: 2678857801
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: dep/city_building_bby_crop.ab
       Dependencies: {}
     Info_1:
-      Name: dep/unit_barrel.ab
-      Dependencies: {}
-    Info_2:
-      Name: dep/unit_book.ab
-      Dependencies: {}
-    Info_3:
       Name: dep/effect_icon_01.ab
       Dependencies: {}
-    Info_4:
+    Info_2:
       Name: res/terrain/terrain_01.ab
       Dependencies: {}
-    Info_5:
+    Info_3:
       Name: res/terrain/terrain_02.ab
       Dependencies: {}
-    Info_6:
-      Name: res/unit/unit_player_01.ab
-      Dependencies: {}
-    Info_7:
-      Name: res/unit/unit_player_02.ab
-      Dependencies: {}
-    Info_8:
+    Info_4:
       Name: res/city/city_building_bby_01.ab
       Dependencies:
         Dependency_0: dep/city_building_bby_crop.ab
-    Info_9:
+    Info_5:
       Name: res/city/city_building_bby_02.ab
       Dependencies:
         Dependency_0: dep/city_building_bby_crop.ab
-    Info_10:
-      Name: res/unit/unit_barrel_01.ab
-      Dependencies:
-        Dependency_0: dep/unit_barrel.ab
-    Info_11:
-      Name: res/unit/unit_barrel_02.ab
-      Dependencies:
-        Dependency_0: dep/unit_barrel.ab
-    Info_12:
-      Name: res/unit/unit_book_01.ab
-      Dependencies:
-        Dependency_0: dep/unit_book.ab
-    Info_13:
-      Name: res/unit/unit_book_02.ab
-      Dependencies:
-        Dependency_0: dep/unit_book.ab
-    Info_14:
+    Info_6:
+      Name: res/unit/unit_hero_dengkai.ab
+      Dependencies: {}
+    Info_7:
+      Name: res/unit/unit_hero_zhangsan.ab
+      Dependencies: {}
+    Info_8:
       Name: res/effect/city_effect_tf.ab
       Dependencies:
         Dependency_0: dep/effect_icon_01.ab
-    Info_15:
+    Info_9:
       Name: res/effect/city_effect_tp.ab
       Dependencies:
         Dependency_0: dep/effect_icon_01.ab
+    Info_10:
+      Name: res/unit/unit_monster_lang.ab
+      Dependencies: {}
