@@ -15,20 +15,26 @@ namespace Framework
         public int depth = 0;
     }
 
+    public class BuildNode
+    {
+        public string path;
+        public bool isDependcy;
+    }
+
     public class AssetBundleBuilder : Editor
     {
         //需要打包的资源路径（相对于Assets目录），通常是prefab,lua,及其他数据。（贴图，动画，模型，材质等可以通过依赖自己关联上，不需要添加在该路径里，除非是特殊需要）
         //注意这里是目录，单独零散的文件，可以新建一个目录，都放在里面打包
         public static List<string> s_abResourcePath = new List<string>()
         {
-            "Art/Prefab",
+            "Res",
         };
 
         public static string s_assetBundlePath = EditorPathUtil.GetExportAssetBundlePath();
 
         private static List<AssetNode> s_leafAssetNodes = new List<AssetNode>();
         private static Dictionary<string, AssetNode> s_allAssetNodes = new Dictionary<string, AssetNode>();
-        private static List<string> s_buildMap = new List<string>();
+        private static List<BuildNode> s_buildMap = new List<BuildNode>();
        
         [MenuItem("Tool/Builder/Build Bundle")]
         public static void BuildAssetBundle()
@@ -125,10 +131,18 @@ namespace Framework
                 List<AssetNode> curDepthNodesList = new List<AssetNode>();
                 for (int i = 0; i < s_leafAssetNodes.Count; i++) {
                     if (s_leafAssetNodes[i].depth == maxDepth) {
-                        //如果叶子节点有多个父节点或者没有父节点,打包该叶子节点
-                        if (s_leafAssetNodes[i].parents.Count != 1) {
+                        // 如果叶子节点有多个父节点或者没有父节点,打包该叶子节点
+                        int parentCount = s_leafAssetNodes[i].parents.Count;
+                        if (parentCount != 1) {
                             if (!ShouldIgnoreFile(s_leafAssetNodes[i].path)) {
-                                s_buildMap.Add(s_leafAssetNodes[i].path);
+                                BuildNode build = new BuildNode();
+                                build.path = s_leafAssetNodes[i].path;
+                                if (parentCount < 1) {
+                                    build.isDependcy = false;
+                                } else {
+                                    build.isDependcy = true;
+                                }
+                                s_buildMap.Add(build);
                             }
                         }
                         curDepthNodesList.Add(s_leafAssetNodes[i]);
@@ -171,9 +185,20 @@ namespace Framework
             string prefix = "Assets";
             AssetBundleBuild[] buildMapArray = new AssetBundleBuild[s_buildMap.Count];
             for (int i = 0; i < s_buildMap.Count; i++) {
-                buildMapArray[i].assetBundleName = s_buildMap[i].Substring(prefix.Length + 1);
-                buildMapArray[i].assetNames = new string[] { s_buildMap[i] };
-                Debug.Log(s_buildMap[i]);
+                BuildNode build = s_buildMap[i];
+                string bundlePath = build.path.Substring(prefix.Length + 1);
+                string bundleBaseDir = "dep";
+                if (!build.isDependcy) {
+                    string[] folderArr = bundlePath.Split(new char[] { '/', '\\' });
+                    if (folderArr.Length < 2) {
+                        throw new System.Exception("Build assetbundle error, res can't store root folder.");
+                    }
+                    bundleBaseDir = string.Format("{0}/{1}", folderArr[0], folderArr[1]);
+                }
+                string fileName = Path.GetFileNameWithoutExtension(bundlePath);
+                string bundleName = string.Format("{0}/{1}.ab", bundleBaseDir, fileName);
+                buildMapArray[i].assetBundleName = bundleName;
+                buildMapArray[i].assetNames = new string[] { build.path };
             }
             if (!Directory.Exists(s_assetBundlePath)) {
                 Directory.CreateDirectory(s_assetBundlePath);

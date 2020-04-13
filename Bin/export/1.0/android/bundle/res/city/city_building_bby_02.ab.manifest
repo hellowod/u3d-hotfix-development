@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 3719818275
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bb6fd629b6bb492934f21ff9461828ca
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d53edba7c946d3b5cab1548e0d11f714
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/City/Building/city_building_bby_02.prefab
+Dependencies:
+- E:/ZWork/Project_Git/u3d-hotfix-development/Bin/export/1.0/android/bundle/dep/city_building_bby_crop.ab
