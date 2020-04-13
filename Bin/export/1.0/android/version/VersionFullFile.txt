@@ -1,12 +1,15 @@
-bundle,03f8e497cd2198f1a57968e53b9d97b0
+bundle,2ef19af74af6554fca0fac76c3f69f0e
 dep\city_building_bby_crop.ab,8ea829a04b9c5e647029ba1bf035e9ab
 dep\effect_icon_01.ab,7b178fa9a3a04aac0f2d2b3c8676d647
 res\city\city_building_bby_01.ab,42fb620e23af25e678125c329f030795
 res\city\city_building_bby_02.ab,8a41bd48efe56498135f2e5bf97278ef
+res\city\city_building_bby_03.ab,e78bf6f9790b280ed74cc392b758855a
 res\effect\city_effect_tf.ab,660bb8ef3c0c9eac1fa665d053150043
 res\effect\city_effect_tp.ab,c19cb9c5963c7f2a658e734a778337d5
 res\terrain\terrain_01.ab,cc90fd19cbdd802164b3e59ce90c2066
 res\terrain\terrain_02.ab,a22e848271d0cc9e5c57adfd81f1e8bb
+res\terrain\terrain_03.ab,5532a62bc104574c61e332085b3a6d3d
+res\terrain\terrain_04.ab,69bc9986dd763d16133f81446ac0b5c0
 res\unit\unit_hero_dengkai.ab,f3757214aa96acbce26891eb083b0ed7
 res\unit\unit_hero_zhangsan.ab,bd459c1371a20a11ae58daacbb5803e0
 res\unit\unit_monster_lang.ab,45b9f42abf1bde52bdd1f699a7a0604a

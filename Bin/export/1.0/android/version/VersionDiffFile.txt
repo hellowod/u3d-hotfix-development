@@ -1,5 +1,9 @@
-bundle,582032ae953007745da6f59a13db9570,2
+bundle,2ef19af74af6554fca0fac76c3f69f0e,2
 art\prefab\maincity_04.prefab,77f7f87a45943ba62858b484c551f965,1
 art\prefab\book_05.prefab,fc901279cb354fab9f224155b4b51782,2
 art\prefab\maincity_05.prefab,d43df54e4f203c344cbdbcb4c979e829,2
+res\terrain\terrain_03.ab,5532a62bc104574c61e332085b3a6d3d,1
+dep\city_building_bby_crop.ab,8ea829a04b9c5e647029ba1bf035e9ab,2
+res\city\city_building_bby_03.ab,e78bf6f9790b280ed74cc392b758855a,2
+res\terrain\terrain_04.ab,69bc9986dd763d16133f81446ac0b5c0,2
 2
