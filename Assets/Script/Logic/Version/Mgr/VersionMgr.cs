@@ -15,7 +15,7 @@ namespace Framework
         // 版本服务器信息
         private VersionSvrModel m_serverResult = null;
 
-        // 客户端端版本信息（最后）
+        // 客户端端版本信息
         private VersionFileModel m_versionFileOnClient = null;
         // 服务器端版本信息
         private VersionFileModel m_versionFileOnServer = null;
