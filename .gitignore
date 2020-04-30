@@ -5,8 +5,6 @@
 /*.csproj
 /*.sln
 /Assets/Release/*
-/Assets/StreamingAssets/*
 .vscode
 .DS_Store
-/Assets/StreamingAssets.meta
 .vs/

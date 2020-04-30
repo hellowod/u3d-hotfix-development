@@ -1,0 +1,5 @@
+{
+	"app_version": 1,
+	"code_version": 1,
+	"check_version_url": "https://gameframework.cn/starforce/version.txt"
+}
