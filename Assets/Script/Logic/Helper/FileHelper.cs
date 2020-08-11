@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System;
 
 namespace Framework
 {
@@ -36,7 +37,7 @@ namespace Framework
                     if (key.Equals("AppVersion")) {
                         versionData.AppVersion = val;
                     } else if (key.Equals("ResVersion")) {
-                        versionData.ResVersion = val;
+                        versionData.ResVersion = Convert.ToInt32(val);
                     } else if (key.Equals("ResUpdateURL")) {
                         versionData.DownloadBaseUrl = val;
                     }
@@ -62,10 +63,10 @@ namespace Framework
                             Debug.LogError("Can not parse last update file with content " + content[i]);
                             return;
                         }
-                        versionFile.FilesDic[kvp[0]] = new VersionFileInfo(kvp[1], kvp[2]);
+                        versionFile.FilesDic[kvp[0]] = new VersionFileInfo(kvp[1], Convert.ToInt32(kvp[2]));
                     }
                 }
-                versionFile.ResVersion = content[content.Length - 1];
+                versionFile.ResVersion = Convert.ToInt32(content[content.Length - 1]);
             }
         }
 

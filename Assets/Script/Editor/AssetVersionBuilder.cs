@@ -138,7 +138,7 @@ namespace Framework
                 return;
             }
             // 设置更新文件
-            string newVersion = VersionConfig.RES_VERSION;
+            int newVersion = VersionConfig.RES_VERSION;
             s_versionFile.ResVersion = newVersion;
             for (int i = 0; i < needUpdateFileList.Count; i++) {
                 s_versionFile.FilesDic[needUpdateFileList[i]] = new VersionFileInfo(s_allFilesMd5DiffVersion[needUpdateFileList[i]], newVersion);

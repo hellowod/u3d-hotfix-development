@@ -9,7 +9,7 @@ namespace Framework
     public class VersionFileInfo
     {
         private string m_md5;
-        private string m_version;
+        private int m_version;
 
         public string md5
         {
@@ -18,14 +18,14 @@ namespace Framework
             }
         }
 
-        public string version
+        public int version
         {
             get {
                 return m_version;
             }
         }
 
-        public VersionFileInfo(string md5Val, string versionVal)
+        public VersionFileInfo(string md5Val, int versionVal)
         {
             m_md5 = md5Val;
             m_version = versionVal;
@@ -34,7 +34,7 @@ namespace Framework
 
     public class VersionFileModel
     {
-        public string ResVersion = "0";
+        public int ResVersion = 0;
         public Dictionary<string, VersionFileInfo> FilesDic;
 
         public VersionFileModel()

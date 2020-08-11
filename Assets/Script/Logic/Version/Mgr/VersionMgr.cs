@@ -7,10 +7,10 @@ namespace Framework
 {
     public class VersionMgr
     {
-        private const string VERSION_URL = "http://10.12.21.75/Version.txt";
+        private const string VERSION_URL = "http://127.0.0.1/export/version.txt";
 
         private string m_appVersion = "";
-        private string m_resVersion = "";
+        private int m_resVersion = 0;
 
         // 版本服务器信息
         private VersionSvrModel m_serverResult = null;
@@ -193,7 +193,7 @@ namespace Framework
                 return;
             }
             Debug.Log("Begin download update files " + m_needUpdateFileList[index]);
-            string version = m_versionFileOnServer.FilesDic[m_needUpdateFileList[index]].version;
+            int version = m_versionFileOnServer.FilesDic[m_needUpdateFileList[index]].version;
             string downloadUrl = string.Format("{0}/{1}/{2}", m_serverResult.DownloadBaseUrl, version, m_needUpdateFileList[index]);
             DownloadMgr.Instance.Download(downloadUrl, OnUpdateFileDownloadFinised);
         }

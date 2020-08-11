@@ -1,6 +1,0 @@
-bundle,78187fe429cca9fa4f1520d95f649184,1
-art\prefab\maincity_04.prefab,aa1d17b7a92dc487143849f1bf172177,1
-art\prefab\book_05.prefab,fd9dba1fda68102b692883250f691ca2,2
-art\prefab\maincity_05.prefab,b2b667c367851cff4a5c089286379930,2
-res\terrain\terrain_03.ab,147beedb03ea72c7856f6c35fd6c7bc5,1
-1

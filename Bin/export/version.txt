@@ -1,6 +1,0 @@
-﻿;大版本号,1开始
-AppVersion=1
-;代码版本号,0开始
-CodeVersion=1
-;资源版本号,1开始
-ResVersion=2

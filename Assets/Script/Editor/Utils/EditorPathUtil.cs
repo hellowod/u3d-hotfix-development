@@ -3,7 +3,16 @@ using UnityEditor;
 
 public class EditorPathUtil
 {
-    private static string RootPath = string.Format("{0}/{1}/{2}", "Bin/export", VersionConfig.APP_VERSION, EditorBaseUtil.GetBuildTarget().ToString().ToLower());
+    private static string RootPath = string.Format("{0}/{1}/{2}", "Bin/export/version", VersionConfig.APP_VERSION, EditorBaseUtil.GetBuildTarget().ToString().ToLower());
+
+    /// <summary>
+    /// 获取项目路径
+    /// </summary>
+    /// <returns></returns>
+    public static string GetProjectPath()
+    {
+        return "Bin/export/";
+    }
 
     /// <summary>
     /// 获取导出项目路径
@@ -22,12 +31,21 @@ public class EditorPathUtil
     }
 
     /// <summary>
+    /// 获取导出工作空间路径
+    /// </summary>
+    /// <returns></returns>
+    public static string GetExportWorkingPath()
+    {
+        return string.Format("{0}/working", GetProjectPath());
+    }
+
+    /// <summary>
     /// 获取AssetBundle路径
     /// </summary>
     /// <returns></returns>
     public static string GetExportAssetBundlePath()
     {
-        return string.Format("{0}/bundle/", RootPath);
+        return string.Format("{0}/bundle/{1}", RootPath, VersionConfig.RES_VERSION);
     }
 
     /// <summary>
@@ -36,7 +54,7 @@ public class EditorPathUtil
     /// <returns></returns>
     public static string GetExportVersionFullFilePath()
     {
-        return string.Format("{0}/version/VersionFullFile.txt", RootPath);
+        return string.Format("{0}/config/VersionFullFile.txt", RootPath);
     }
 
     /// <summary>
@@ -45,7 +63,7 @@ public class EditorPathUtil
     /// <returns></returns>
     public static string GetExportVersionDiffFilePath()
     {
-        return string.Format("{0}/version/{1}", RootPath, VersionConfig.VERSION_DIFF_FILE);
+        return string.Format("{0}/config/{1}", RootPath, VersionConfig.VERSION_DIFF_FILE);
     }
 
     /// <summary>
@@ -54,6 +72,6 @@ public class EditorPathUtil
     /// <returns></returns>
     public static string GetExportPatchPath()
     {
-        return string.Format("{0}/patch/{1}", RootPath, VersionConfig.RES_VERSION);
+        return string.Format("{0}/patch/{1}_{2}", RootPath, VersionConfig.RES_VERSION, (VersionConfig.RES_VERSION - 1));
     }
 }

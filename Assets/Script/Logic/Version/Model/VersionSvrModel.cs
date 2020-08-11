@@ -4,7 +4,7 @@
     {
         public string DownloadBaseUrl = null;
         public string AppVersion;
-        public string ResVersion;
+        public int ResVersion;
         public VersionType VersionType = VersionType.None;
 
         public VersionSvrModel()
